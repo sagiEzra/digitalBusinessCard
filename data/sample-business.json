@@ -1,13 +1,16 @@
 {
   "name": "מאפיית ג'ון",
   "mainPhoto": "/images/johnsbakery/main.jpg",
-  "gallery": ["/images/johnsbakery/photo1.jpg", "/images/johnsbakery/photo2.jpg"],
+  "coverImage": "/images/johnsbakery/cover.jpg",
+  "gallery": ["/images/johnsbakery/photo1.jpg", "/images/johnsbakery/photo2.jpg","/images/johnsbakery/photo1.jpg","/images/johnsbakery/photo1.jpg"],
   "headerText": "המאפייה הטובה בעיר!",
   "about": "אנו אופים לחם ומאפים טריים מדי יום.",
   "businessHours": "9:00 - 17:00 ראשון-חמישי",
   "contact": {
     "phone": "+972123456789",
     "whatsapp": "https://wa.me/972123456789",
+    "facebook": "https://facebook.com/johnsbakery",
+    "instagram": "https://instagram.com/shiraz.k_",
     "email": "john@bakery.com",
     "website": "https://johnsbakery.com",
     "linkedin": "https://linkedin.com/in/johnsbakery",

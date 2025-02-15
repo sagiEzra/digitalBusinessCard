@@ -1,7 +1,8 @@
 {
   "name": "סוכנות נדל\"ן של דני",
   "mainPhoto": "/images/realestate/main.jpg",
-  "gallery": ["/images/realestate/photo1.jpg", "/images/realestate/photo2.jpg"],
+  "coverImage": "/images/johnsbakery/cover.jpg",
+  "gallery": ["/images/realestate/photo1.jpg","/images/realestate/photo1.jpg", "/images/realestate/photo2.jpg"],
   "headerText": "הסוכנות המובילה בנדל\"ן!",
   "about": "אנו מתמחים במכירה והשכרה של נכסים יוקרתיים.",
   "businessHours": "9:00 - 18:00 ראשון-חמישי",
@@ -9,6 +10,8 @@
     "phone": "+972987654321",
     "whatsapp": "https://wa.me/972987654321",
     "email": "danny@realestate.com",
+    "facebook": "https://facebook.com/dannyrealestate",
+    "instagram": "https://instagram.com/shiraz.k_",
     "website": "https://dannyrealestate.com",
     "linkedin": "https://linkedin.com/in/dannyrealestate",
     "maps": "https://www.google.com/maps?q=Danny's+Real+Estate",

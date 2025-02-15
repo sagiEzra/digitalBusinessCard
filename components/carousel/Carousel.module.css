@@ -1,0 +1,71 @@
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.carouselInner {
+  display: flex;
+}
+
+.carouselItem {
+  min-width: 33.33%; /* Show 3 items per frame */
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carouselImage {
+  width: 100%; /* Ensure all images are the same size */
+  height: 200px; /* Fixed height */
+  object-fit: cover;
+  border-radius: 10px;
+  animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.carouselButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.carouselButton:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carouselButton:first-of-type {
+  left: 10px;
+}
+
+.carouselButton:last-of-type {
+  right: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+  .carouselImage {
+    width: 100%;
+  }
+
+  .carouselButton {
+    padding: 5px;
+  }
+}

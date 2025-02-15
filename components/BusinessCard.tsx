@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import styles from './BusinessCard.module.css';
-import { FaGlobe, FaEnvelope, FaLinkedin, FaMapMarkerAlt, FaWaze, FaWhatsapp, FaPhone, FaPlus, FaChevronDown, FaChevronUp, FaFacebook } from 'react-icons/fa';
+import { FaGlobe, FaEnvelope, FaLinkedin, FaMapMarkerAlt, FaWaze, FaWhatsapp, FaPhone, FaPlus, FaChevronDown, FaChevronUp, FaFacebook, FaInstagram } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+import Carousel from './carousel/Carousel';
+import CoverMainImages from './coverMainImages/coverMainImages';
+import { MapEmbed } from './mapEmbed/mapEmbed';
+import { ContactButtons } from './contactButtons/contactButtons';
 
 interface Props {
   data: {
     name: string;
+    coverImage: string;
     mainPhoto: string;
     gallery: string[];
     headerText: string;
@@ -32,16 +37,13 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
     }));
   };
 
-  const handleDownloadContact = () => {
-    const vCardContent = `BEGIN:VCARD\nVERSION:3.0\nFN:${data.name}\nTEL:${data.contact.phone}\nEMAIL:${data.contact.email}\nURL:${data.contact.website}\nEND:VCARD`;
-    const blob = new Blob([vCardContent], { type: 'text/vcard' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'contact.vcf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const renderAboutText = (text: string) => {
+    return text.split('\n').map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        <br />
+      </React.Fragment>
+    ));
   };
 
   return (
@@ -64,65 +66,21 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
         <link rel="apple-touch-icon" href={data.favicon} />
       </Head>
       <div className={styles.header}>
-        <img className={styles.mainPhoto} src={data.mainPhoto} alt="Main Photo" />
+        <CoverMainImages
+          coverImage={data.coverImage}
+          mainPhoto={data.mainPhoto}
+          mainPhotoBorderColor={data.design.mainColor} //TODO: save mainColor as css variable
+          showDecorativeLines={true}
+        />
         <h1 className={styles.name}>{data.name}</h1>
         <p className={styles.headerText}>{data.headerText}</p>
       </div>
-      <div className={styles.socialLinks}>
 
-        <div className={styles.row}>
-          <a href={data.contact.whatsapp} className={styles.button}>
-            <FaWhatsapp className={styles.icon} />
-            <span>וואטסאפ</span>
-          </a>
-          <a href={`tel:${data.contact.phone}`} className={styles.button}>
-            <FaPhone className={styles.icon} />
-            <span>התקשר</span>
-          </a>
-          <a href={data.contact.facebook} className={styles.button}>
-            <FaFacebook className={styles.icon} />
-            <span>פייסבוק</span>
-          </a>
-        </div>
+      <ContactButtons name={data.name} contact={data.contact} mainColor={data.design.mainColor}/>
 
-        <div className={styles.row}>
-          <a href={data.contact.website} className={styles.button}>
-            <FaGlobe className={styles.icon} />
-            <span>אתר</span>
-          </a>
-          <a href={`mailto:${data.contact.email}`} className={styles.button}>
-            <FaEnvelope className={styles.icon} />
-            <span>אימייל</span>
-          </a>
-          <a href={data.contact.linkedin} className={styles.button}>
-            <FaLinkedin className={styles.icon} />
-            <span>לינקדאין</span>
-          </a>
-        </div>
-
-        <div className={styles.row}>
-          <a href={data.contact.maps} className={styles.button}>
-            <FaMapMarkerAlt className={styles.icon} />
-            <span>מפות</span>
-          </a>
-          <a href={data.contact.waze} className={styles.button}>
-            <FaWaze className={styles.icon} />
-            <span>ווייז</span>
-          </a>
-          <a href={data.contact.waze} className={styles.button}>
-            <FaWaze className={styles.icon} />
-            <span>ווייז</span>
-          </a>
-        </div>
-
-      </div>
-      <button onClick={handleDownloadContact} className={styles.addContactButton}>
-        <FaPlus className={styles.plusIcon} />
-        <span>שמירת איש קשר</span>
-      </button>
       <div className={styles.about}>
-        <h2>אודותינו</h2>
-        <p>{data.about}</p>
+        <h2>בואו נכיר</h2>
+        <p>{renderAboutText(data.about)}</p>
       </div>
       <div className={styles.businessHours}>
         <h2>שעות פעילות</h2>
@@ -140,10 +98,9 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
         ))}
       </div>
       <div className={styles.gallery}>
-        {data.gallery.map((photo: string, index: number) => (
-          <img key={index} className={styles.galleryPhoto} src={photo} alt={`Gallery Photo ${index + 1}`} />
-        ))}
+        <Carousel images={data.gallery} />
       </div>
+      <MapEmbed mapsLink={data.contact.maps} />
     </div>
   );
 };
