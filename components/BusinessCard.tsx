@@ -7,6 +7,7 @@ import Carousel from './carousel/Carousel';
 import CoverMainImages from './coverMainImages/coverMainImages';
 import { MapEmbed } from './mapEmbed/mapEmbed';
 import { ContactButtons } from './contactButtons/contactButtons';
+import { Sections } from './sections/sections';
 
 interface Props {
   data: {
@@ -26,16 +27,8 @@ interface Props {
 }
 
 export const BusinessCard: React.FC<Props> = ({ data }) => {
-  const [openSections, setOpenSections] = useState<{ [key: number]: boolean }>({});
   const router = useRouter();
   const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${router.asPath}`;
-
-  const handleToggleSection = (index: number) => {
-    setOpenSections(prevState => ({
-      ...prevState,
-      [index]: !prevState[index]
-    }));
-  };
 
   const renderAboutText = (text: string) => {
     return text.split('\n').map((line, index) => (
@@ -76,7 +69,7 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
         <p className={styles.headerText}>{data.headerText}</p>
       </div>
 
-      <ContactButtons name={data.name} contact={data.contact} mainColor={data.design.mainColor}/>
+      <ContactButtons name={data.name} contact={data.contact} mainColor={data.design.mainColor} />
 
       <div className={styles.about}>
         <h2>בואו נכיר</h2>
@@ -86,17 +79,7 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
         <h2>שעות פעילות</h2>
         <p>{data.businessHours}</p>
       </div>
-      <div className={styles.sections}>
-        {data.sections.map((section: any, index: number) => (
-          <div key={index} className={styles.section}>
-            <button className={styles.sectionHeader} onClick={() => handleToggleSection(index)}>
-              <span>{section.subTitle}</span>
-              {openSections[index] ? <FaChevronUp /> : <FaChevronDown />}
-            </button>
-            {openSections[index] && <div className={styles.sectionContent}>{section.content}</div>}
-          </div>
-        ))}
-      </div>
+      <Sections sections={data.sections} />
       <div className={styles.gallery}>
         <Carousel images={data.gallery} />
       </div>
