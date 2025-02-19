@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import styles from './BusinessCard.module.css';
-import { FaGlobe, FaEnvelope, FaLinkedin, FaMapMarkerAlt, FaWaze, FaWhatsapp, FaPhone, FaPlus, FaChevronDown, FaChevronUp, FaFacebook, FaInstagram } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Carousel from './carousel/Carousel';
 import CoverMainImages from './coverMainImages/coverMainImages';
@@ -31,7 +30,7 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
   const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${router.asPath}`;
 
   const renderAboutText = (text: string) => {
-    return text.split('\n').map((line, index) => (
+    return text.split('\\n').map((line, index) => (
       <React.Fragment key={index}>
         {line}
         <br />
