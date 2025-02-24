@@ -63,7 +63,7 @@ export const ContactButtons: React.FC<ContactButtonsProps> = ({ mainColor = '#0b
 
             </div>
 
-            <button onClick={handleDownloadContact} className={styles.addContactButton} style={{ borderColor: mainColor }}>
+            <button onClick={handleDownloadContact} className={styles.addContactButton} style={{ borderColor: secondaryColor }}>
                 <span>שמרו אותי באנשי הקשר</span>
                 <FaPlus className={styles.plusIcon} />
             </button>
