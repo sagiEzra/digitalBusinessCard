@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import styles from './BusinessCard.module.css';
 import { useRouter } from 'next/router';
-import Carousel from './carousel/Carousel';
 import CoverMainImages from './coverMainImages/coverMainImages';
 import { MapEmbed } from './mapEmbed/mapEmbed';
 import { ContactButtons } from './contactButtons/contactButtons';
 import { Sections } from './sections/sections';
 import { About } from './about/about';
 import curvy from '../icons/curvyUnderLine.svg';
+import { Gallery } from './gallery/gallery';
+import { FloatingWhatsAppButton } from './floationgWhatsAppButton/FloatingWhatsAppButton';
 
 interface Props {
   data: {
@@ -72,15 +73,15 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
         onCtaClick={() => alert('Contact us clicked!')}
       />
 
+      <Sections sections={data.sections} />
       <div className={styles.businessHours}>
         <h2>שעות פעילות</h2>
         <p>{data.businessHours}</p>
       </div>
-      <Sections sections={data.sections} />
-      <div className={styles.gallery}>
-        <Carousel images={data.gallery} />
-      </div>
+      <Gallery images={data.gallery} galleryType='carousel' />
+      {/* // TODO: add testimonials. */}
       <MapEmbed mapsLink={data.contact.maps} />
+      <FloatingWhatsAppButton contact={data.contact} /> {/* // TODO: make optional boolean. */}
     </div>
   );
 };

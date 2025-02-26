@@ -70,7 +70,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, autoScrollTime = 3, imageTr
       <button className={styles.next} onClick={nextSlide}>
         &#10095;
       </button>
-      <div className={styles.dots}>
+      {/* <div className={styles.dots}>
         {images.map((_, index) => (
           <span
             key={index}
@@ -78,7 +78,7 @@ const Carousel: React.FC<CarouselProps> = ({ images, autoScrollTime = 3, imageTr
             onClick={() => setCurrentIndex(index)}
           ></span>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

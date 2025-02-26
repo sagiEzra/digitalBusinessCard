@@ -1,32 +1,59 @@
 .sections {
-    margin: 20px 0;
+  width: 100%;
+  margin: 20px 0;
 }
 
 .section {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
+  border: 1px solid white;
+  border-radius: 10px;
+  /* TODO: use color variable configured */
+  background: rgb(241, 241, 241);
 }
 
 .sectionHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 10px;
-    background: #f0f0f0;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background 0.3s ease;
+  width: 100%;
+  background: none;
+  border-bottom: 1px solid black;
+  border-radius: 10px 10px 0 0; /* coupled with 'section' border-radius */
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Vertically center items */
+  padding: 10px 0;
+  cursor: pointer;
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #000;
+  transition: color 0.3s ease;
 }
 
-.sectionHeader:hover {
-    background: #e0e0e0;
+.sectionHeader:hover, .sectionHeader:focus {
+  background: #ffffff;
+}
+
+.subTitle {
+  margin-right: 10px;
 }
 
 .sectionContent {
-    padding: 10px;
-    background: #fafafa;
-    border-radius: 5px;
-    margin-top: 5px;
+  margin-right: 14px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.sectionContent.open {
+  max-height: 500px; /* Adjust this value based on your content */
+  padding: 10px 0;
+}
+
+.icon {
+  margin-left: 10px;
+  transition: transform 0.3s ease;
+  display: flex; /* Add flex display */
+  align-items: center; /* Vertically center the icon */
+}
+
+.icon.open {
+  transform: rotate(359deg); /* Rotate 180 degrees for a smoother transition */
 }

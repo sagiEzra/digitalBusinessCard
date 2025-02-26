@@ -3,8 +3,13 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background: #fff;
-  border-radius: 10px;
+  /* TODO: use Backcolor variable (could be gradient) configured, or image */
+  /* background: #fff; */
+  /* background: linear-gradient(135deg, #ffffff, #f9f9f9); */
+  /* background: linear-gradient(360deg, #1642d455, #ffffff); */
+  /* background: linear-gradient(360deg, #1642d455, #ffffff); */
+  background: #f4f7ff;
+  border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   animation: fadeIn 1s ease-in-out;
   direction: rtl;
@@ -36,18 +41,19 @@
 }
 
 .businessHours {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   margin: 20px 0;
+  padding: 20px;
+  /* TODO: use color variable configured */
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-.gallery {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+.businessHours h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #333;
 }
 
 .galleryPhoto {

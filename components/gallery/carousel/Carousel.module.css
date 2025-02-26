@@ -15,6 +15,7 @@
   overflow: hidden;
   border-radius: 14px;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  /* TODO: use color variable configured */
   background: rgb(255, 255, 255);
 }
 
