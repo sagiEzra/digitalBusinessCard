@@ -1,0 +1,76 @@
+{
+  "name": "מד - קור",
+  "mainPhoto": "/images/madkor/main.jpeg",
+  "coverImage": "/images/madkor/cover3.jpeg",
+  "gallery": [
+    "/images/madkor/image1.jpeg",
+    "/images/madkor/image2.jpeg",
+    "/images/madkor/image3.jpeg",
+    "/images/madkor/image4.jpeg",
+    "/images/madkor/image5.jpeg",
+    "/images/madkor/image6.jpeg",
+    "/images/madkor/image7.jpeg",
+    "/images/madkor/image8.jpeg",
+    "/images/madkor/image9.jpeg",
+    "/images/madkor/image10.jpeg",  
+    "/images/madkor/image11.jpeg"
+  ],
+  "headerText": "מומחים למיזוג אוויר באילת!",
+  "about": [
+    {
+      "description": "מחפשים פתרון מקצועי לכל בעיה במזגן? צריכים התקנה של מערכת מיזוג חדשה? מד קור כאן בשבילכם!"
+    },
+    {
+      "description": "פתרון תקלות והתקנת מערכות מיזוג אוויר",
+      "dots": [
+        "תיקון, התקנה ותחזוקה לכל סוגי המזגנים, כולל מערכות VRF",
+        "אספקת מזגנים – קונים דרכנו? נדאג להביא ולהתקין!",
+        "ניקוי חומצה (כימי) – לחידוש המזגן ולאוויר נקי וקר",
+        "שירות לעסקים, חנויות, בתים פרטיים ופרויקטים גדולים",
+        "ייעוץ מקצועי ומחירים נוחים וגמישים"
+      ]
+    },
+    {
+      "subTitle": "מי אנחנו?",
+      "description": "עסק משפחתי של שני אחים מאילת עם מעל 10 שנות ניסיון במיזוג אוויר. צוות מקצועי, שירות אדיב ואווירה טובה – כי אצלנו הלקוח תמיד במרכז!"
+    }
+  ],
+  "businessHours": "9:00 - 18:00 ראשון-חמישי",
+  "contact": {
+    "phone": "+972584783000",
+    "phone2": "+972506311123",
+    "whatsapp": "https://wa.me/972584783000",
+    "email": "madkor@airconditioning.com",
+    "facebook": "https://facebook.com/madkor",
+    "instagram": "https://instagram.com/madkor_air",
+    "website": "https://madkor.com",
+    "linkedin": "https://linkedin.com/in/madkor",
+    "maps": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3446.9225029897815!2d34.9447058!3d29.5542382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15006e023ba56685%3A0xc4712f34701704b1!2sMadKor%20-%20Air%20Conditioning%20Experts!5e0!3m2!1sen!2sil!4v1699999999999",
+    "waze": "https://www.waze.com/he/live-map/directions/il/%D7%9E%D7%97%D7%95%D7%96-%D7%94%D7%93%D7%A8%D7%95%D7%9D/%D7%90%D7%99%D7%9C%D7%AA/madkor-%D7%9E%D7%99%D7%96%D7%95%D7%92-%D7%90%D7%95%D7%95%D7%99%D7%A8?navigate=yes&to=place.ChIJhWalOwJuABURsQQXcDQvccQ"
+  },
+  "testimonials": {
+    "googleReviewsUrl": "https://www.google.com/search?q=madkor+eilat&ludocid=9876543210987654321"
+  },
+  "sections": [
+    {
+      "subTitle": "שירותים",
+      "content": "תיקון, התקנה ותחזוקה לכל סוגי המזגנים, כולל מערכות VRF"
+    },
+    {
+      "subTitle": "ניקוי חומצה",
+      "content": "ניקוי חומצה (כימי) – לחידוש המזגן ולאוויר נקי וקר"
+    },
+    {
+      "subTitle": "לקוחות מרוצים",
+      "content": "שירות לעסקים, חנויות, בתים פרטיים ופרויקטים גדולים"
+    }
+  ],
+  "design": {
+    "mainPhotoSize": "xl",
+    "mainColor": "#000",
+    "secondaryColor": "#000",
+    "font": "1",
+    "iconStyle": "2"
+  },
+  "favicon": "/images/madkor/favicon.ico"
+}

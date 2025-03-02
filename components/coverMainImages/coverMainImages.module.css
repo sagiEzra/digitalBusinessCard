@@ -18,7 +18,10 @@
 .coverImage {
   width: 100%;
   /* height: 250px; */
-  margin: 25px;
+  margin-bottom: 20px;
+  /* margin-left: 20px;
+  margin-right: 20px; */
+
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -26,13 +29,25 @@
 
 .mainPhotoContainer {
   margin-top: -10px;
-  width: 160px;
-  height: 160px;
   border: 4px solid #fff;
   border-radius: 50%;
   overflow: hidden;
   background-color: #fff;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6)
+}
+.mainPhotoContainer.m {
+  width: 160px;
+  height: 160px;
+}
+
+.mainPhotoContainer.l {
+  width: 200px;
+  height: 200px;
+}
+
+.mainPhotoContainer.xl {
+  width: 240px;
+  height: 240px;
 }
 
 .mainPhoto {
@@ -55,11 +70,23 @@
   }
 
   .mainPhotoContainer {
-    width: 130px;
-    /* Adjust size for smaller screens */
-    height: 130px;
-    /* Adjust size for smaller screens */
     bottom: -40px;
     /* Adjust position for smaller screens */
+  }
+
+  .mainPhotoContainer.m {
+    width: 120px;
+    height: 120px;
+  }
+
+  .mainPhotoContainer.l {
+    width: 160px;
+    height: 160px;
+  }
+
+  .mainPhotoContainer.xl {
+    bottom: -80px;
+    width: 200px;
+    height: 200px;
   }
 }

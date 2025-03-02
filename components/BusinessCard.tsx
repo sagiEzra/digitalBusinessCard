@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import styles from './BusinessCard.module.css';
 import { useRouter } from 'next/router';
-import CoverMainImages from './coverMainImages/coverMainImages';
+import { CoverMainImage } from './coverMainImages/coverMainImages';
 import { MapEmbed } from './mapEmbed/mapEmbed';
 import { ContactButtons } from './contactButtons/contactButtons';
 import { Sections } from './sections/sections';
@@ -52,9 +52,10 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
         <link rel="apple-touch-icon" href={data.favicon} />
       </Head>
       <div className={styles.header}>
-        <CoverMainImages
+        <CoverMainImage
           coverImage={data.coverImage}
           mainPhoto={data.mainPhoto}
+          mainPhotoSize={data.design.mainPhotoSize}
           mainPhotoBorderColor={data.design.mainColor} //TODO: save mainColor as css variable
           showDecorativeLines={true}
         />
@@ -66,11 +67,12 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
       <ContactButtons name={data.name} contact={data.contact} mainColor={data.design.mainColor} />
 
       <About
+        contact={data.contact}
         title="קצת עלינו"
         content={data.about}
         highlight="כאן כדי לפתור לך כל בעיה"
         ctaText="חייג ואנחנו לרשותך !"
-        onCtaClick={() => alert('Contact us clicked!')}
+        // onCtaClick={() => alert('Contact us clicked!')}
       />
 
       <Sections sections={data.sections} />
