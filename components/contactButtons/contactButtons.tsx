@@ -12,7 +12,7 @@ interface ContactButtonsProps {
 export const ContactButtons: React.FC<ContactButtonsProps> = ({ mainColor = '#0b3c74', secondaryColor = '#fff', ...attrs }) => {
 
     const handleDownloadContact = () => {
-        const vCardContent = `BEGIN:VCARD\nVERSION:3.0\nFN:${attrs.name}\nTEL:${attrs.contact.phone}\nEMAIL:${attrs.contact.email}\nURL:${attrs.contact.website}\nEND:VCARD`;
+        const vCardContent = `BEGIN:VCARD\nVERSION:3.0\nFN:${attrs.name}\nTEL:${attrs.contact.phone}\n${attrs.contact.phone2 ? `TEL:${attrs.contact.phone2}\n` : ''}EMAIL:${attrs.contact.email}\nURL:${attrs.contact.website}\nEND:VCARD`;
         const blob = new Blob([vCardContent], { type: 'text/vcard' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -23,44 +23,58 @@ export const ContactButtons: React.FC<ContactButtonsProps> = ({ mainColor = '#0b
         document.body.removeChild(link);
     };
 
+    const contactLinks = [
+        attrs.contact.whatsapp && (
+            <a href={attrs.contact.whatsapp} className={styles.button} key="whatsapp">
+                <FaWhatsapp className={styles.icon} />
+                <span>וואטסאפ</span>
+            </a>
+        ),
+        attrs.contact.phone && (
+            <a href={`tel:${attrs.contact.phone}`} className={styles.button} key="phone">
+                <FaPhone className={styles.icon} />
+                <span>התקשר</span>
+            </a>
+        ),
+        attrs.contact.facebook && (
+            <a href={attrs.contact.facebook} className={styles.button} key="facebook">
+                <FaFacebook className={styles.icon} />
+                <span>פייסבוק</span>
+            </a>
+        ),
+        attrs.contact.instagram && (
+            <a href={attrs.contact.instagram} className={styles.button} key="instagram">
+                <FaInstagram className={styles.icon} />
+                <span>אינסטגרם</span>
+            </a>
+        ),
+        attrs.contact.email && (
+            <a href={`mailto:${attrs.contact.email}`} className={styles.button} key="email">
+                <FaEnvelope className={styles.icon} />
+                <span>אימייל</span>
+            </a>
+        ),
+        attrs.contact.waze && (
+            <a href={attrs.contact.waze} className={styles.button} key="waze">
+                <FaWaze className={styles.icon} />
+                <span>ווייז</span>
+            </a>
+        ),
+    ].filter(Boolean);
+
+    const rows = [];
+    for (let i = 0; i < contactLinks.length; i += 3) {
+        rows.push(contactLinks.slice(i, i + 3));
+    }
+
     return (
         <React.Fragment>
             <div className={styles.socialLinks}>
-
-                <div className={styles.row}>
-                    <a href={attrs.contact.whatsapp} className={styles.button}>
-                        <FaWhatsapp className={styles.icon} />
-                        <span>וואטסאפ</span>
-                    </a>
-                    <a href={`tel:${attrs.contact.phone}`} className={styles.button}>
-                        <FaPhone className={styles.icon} />
-                        <span>התקשר</span>
-                    </a>
-                    <a href={attrs.contact.facebook} className={styles.button}>
-                        <FaFacebook className={styles.icon} />
-                        <span>פייסבוק</span>
-                    </a>
-                </div>
-
-                <div className={styles.row}>
-                    {/* <a href={data.contact.website} className={styles.button}>
-                        <FaGlobe className={styles.icon} />
-                        <span>אתר</span>
-                    </a> */}
-                    <a href={attrs.contact.instagram} className={styles.button}>
-                        <FaInstagram className={styles.icon} />
-                        <span>אינסטגרם</span>
-                    </a>
-                    <a href={`mailto:${attrs.contact.email}`} className={styles.button}>
-                        <FaEnvelope className={styles.icon} />
-                        <span>אימייל</span>
-                    </a>
-                    <a href={attrs.contact.waze} className={styles.button}>
-                        <FaWaze className={styles.icon} />
-                        <span>ווייז</span>
-                    </a>
-                </div>
-
+                {rows.map((row, index) => (
+                    <div className={styles.row} key={index}>
+                        {row}
+                    </div>
+                ))}
             </div>
 
             <button onClick={handleDownloadContact} className={styles.addContactButton} style={{ borderColor: secondaryColor }}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import Carousel from './carousel/Carousel';
+import { Carousel } from './carousel/Carousel';
 
 interface GalleryProps {
     images: string[];

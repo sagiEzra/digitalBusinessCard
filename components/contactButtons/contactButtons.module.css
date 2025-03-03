@@ -17,7 +17,7 @@
     align-items: center;
     margin: 15px;
     padding: 10px;
-    background: #0b3c74;
+    background: linear-gradient(190deg, #1a5bb8, #0b3c74); /* TODO: var */
     color: #fff;
     border-radius: 50%;
     text-decoration: none;
@@ -25,10 +25,11 @@
     width: 80px;
     height: 80px;
     justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7); /* TODO: var */
 }
 
 .button:hover {
-    background: #005bb5;
+    background: linear-gradient(135deg, #317fec, #0b3c74); /* TODO: var */
     transform: translateY(-5px);
 }
 
@@ -48,22 +49,25 @@
     width: 100%;
     align-items: center;
     font-size: smaller;
+    font-weight: 500;
     justify-content: center;
     margin: 40px auto;
     padding: 15px 20px;
-    background: #2378d8;
+    background: linear-gradient(190deg, #317fec, #0b3c74); /* TODO: var */
     color: #fff;
-    border: 2px solid;
+    border: 2px solid #000000;
     border-radius: 18px;
     text-decoration: none;
-    transition: background 0.3s ease, transform 0.3s ease;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
     cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
 }
 
 .addContactButton:hover {
-    background: #000000;
+    background: linear-gradient(135deg, #1a5bb8, #0b3c74); 
     transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 }
 
 .plusIcon {

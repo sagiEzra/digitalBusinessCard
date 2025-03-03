@@ -7,7 +7,7 @@ interface MapEmbedProps {
 
 export const MapEmbed: React.FC<MapEmbedProps> = ({mapsLink}) => {
     return (
-        <div className={styles.mapContainer}>
+        mapsLink && <div className={styles.mapContainer}>
             <h2 className={styles.mapTitle}>התקשרו, נקבע פגישה - וניפגש במשרד ! 📌</h2>
             <iframe
                 className={styles.map}

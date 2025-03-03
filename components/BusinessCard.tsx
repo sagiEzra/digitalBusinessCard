@@ -7,7 +7,6 @@ import { MapEmbed } from './mapEmbed/mapEmbed';
 import { ContactButtons } from './contactButtons/contactButtons';
 import { Sections } from './sections/sections';
 import { About } from './about/about';
-import curvy from '../icons/curvyUnderLine.svg';
 import { Gallery } from './gallery/gallery';
 import { FloatingWhatsAppButton } from './floationgWhatsAppButton/FloatingWhatsAppButton';
 
@@ -61,17 +60,16 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
         />
         <h1 className={styles.name}>{data.name}</h1>
         <p className={styles.headerText}>{data.headerText}</p>
-        <img src={curvy.src} alt="Curvy Underline" className={styles.underlineImage} />
       </div>
 
       <ContactButtons name={data.name} contact={data.contact} mainColor={data.design.mainColor} />
 
       <About
         contact={data.contact}
-        title="קצת עלינו"
         content={data.about}
-        highlight="כאן כדי לפתור לך כל בעיה"
-        ctaText="חייג ואנחנו לרשותך !"
+        title="קצת עלינו" // TODO: make a prop instead of hardcoding
+        highlight="כאן כדי לפתור לך כל בעיה" // TODO: make a prop instead of hardcoding
+        ctaText="חייג ואנחנו לרשותך" // TODO: make a prop instead of hardcoding
         // onCtaClick={() => alert('Contact us clicked!')}
       />
 

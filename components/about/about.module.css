@@ -43,6 +43,7 @@
 
 .description {
   font-size: 1.2em;
+  font-weight: 500;
   line-height: 1.6;
   color: #555;
   max-width: 800px;
@@ -84,8 +85,8 @@
 
 .dotsList.visible li {
   /* transform: translateX(-20px); */
-  animation: fadeInLeft 0.7s forwards;
-  animation-delay: 0.1s;
+  animation: fadeInLeft 1s forwards;
+  animation-delay: 0.5s;
 }
 
 .dotsList.dot {
@@ -113,15 +114,21 @@
 }
 
 .highlight {
+  margin-top: 12px;
+  margin-bottom: 10px;
   font-size: 1.2em;
-  color: #0070f3;
+  color: #0b3c74;
   font-weight: bold;
+  text-decoration-line: underline;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 2px;
 }
 
 .cta {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #0070f3;
+  background: linear-gradient(190deg, #317fec, #0b3c74);
   color: #fff;
   border: none;
   border-radius: 5px;

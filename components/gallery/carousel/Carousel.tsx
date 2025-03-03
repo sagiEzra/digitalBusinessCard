@@ -1,86 +1,61 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Carousel.module.css';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 interface CarouselProps {
   images: string[];
-  autoScrollTime?: number; // time in seconds
-  imageTransitionType?: 'opacity' | 'slide' | 'scale' | 'rotate';
-  transitionDuration?: number; // duration in seconds
+  autoPlay?: boolean;
+  autoPlayInterval?: number;
 }
 
-const Carousel: React.FC<CarouselProps> = ({ images, autoScrollTime = 3, imageTransitionType = 'scale', transitionDuration = 0.5 }) => {
+export const Carousel: React.FC<CarouselProps> = ({ images, autoPlay = true, autoPlayInterval = 3000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const resetTimeout = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  };
 
   useEffect(() => {
-    resetTimeout();
-    timeoutRef.current = setTimeout(
-      () => setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1)),
-      autoScrollTime * 1000
-    );
+    if (autoPlay) {
+      const interval = setInterval(() => {
+        handleNext();
+      }, autoPlayInterval);
+      return () => clearInterval(interval);
+    }
+  }, [autoPlay, autoPlayInterval, images.length]);
 
-    return () => {
-      resetTimeout();
-    };
-  }, [currentIndex, images.length]);
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
-  };
-
-  const prevSlide = () => {
+  const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
   };
 
-  const getTransitionClass = () => {
-    switch (imageTransitionType) {
-      case 'slide':
-        return styles.transitionSlide;
-      case 'scale':
-        return styles.transitionScale;
-      case 'rotate':
-        return styles.transitionRotate;
-      default:
-        return styles.transitionOpacityEaseInOut;
-    }
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
   };
 
   return (
     <div className={styles.carousel}>
       <div className={styles.imageContainer}>
-        {images.map((src, index) => (
+        {images.map((image, index) => (
           <div
             key={index}
-            className={`${styles.imageWrapper} ${getTransitionClass()} ${index === currentIndex ? styles.active : ''}`}
-            style={{ transitionDuration: `${transitionDuration}s` }}
+            className={`${styles.imageWrapper} ${index === currentIndex ? styles.active : ''}`}
           >
-            <img src={src} alt={`Slide ${index}`} className={styles.image} />
+            <img src={image} alt={`Slide ${index}`} className={styles.image} />
           </div>
         ))}
+        <button className={styles.prev} onClick={handlePrev}>
+          <FaChevronRight />
+        </button>
+        <button className={styles.next} onClick={handleNext}>
+          <FaChevronLeft />
+        </button>
       </div>
-      <button className={styles.prev} onClick={prevSlide}>
-        &#10094;
-      </button>
-      <button className={styles.next} onClick={nextSlide}>
-        &#10095;
-      </button>
-      {/* <div className={styles.dots}>
+      {images.length <= 12 && <div className={styles.dots}>
         {images.map((_, index) => (
-          <span
+          <div
             key={index}
             className={`${styles.dot} ${index === currentIndex ? styles.activeDot : ''}`}
             onClick={() => setCurrentIndex(index)}
-          ></span>
+          ></div>
         ))}
-      </div> */}
+      </div>
+      }
     </div>
   );
 };
-
-export default Carousel;
