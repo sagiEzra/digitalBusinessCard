@@ -56,10 +56,9 @@
   ],
   "design": {
     "mainPhotoSize": "l",
-    "mainColor": "#FFdd00",
-    "secondaryColor": "#333333",
+    "mainPhotoBorderColor": "#FFdd00",
     "font": "1",
-    "iconStyle": "2"
+    "iconStyle": "1"
   },
   "favicon": "/images/shirazkahloun/favicon.ico"
 }

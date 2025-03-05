@@ -39,9 +39,9 @@
   ],
   "businessHours": "9:00 - 18:00 ראשון-חמישי",
   "contact": {
-    "phone": "+972584783000",
-    "phone2": "+972506311123",
-    "whatsapp": "https://wa.me/972584783000",
+    "phone": "+972506311123",
+    "phone2": "+972584783000",
+    "whatsapp": "https://wa.me/972506311123",
     "instagram": "https://www.instagram.com/mad__kor"
   },
   "testimonials": {
@@ -79,10 +79,9 @@
   ],
   "design": {
     "mainPhotoSize": "xl",
-    "mainColor": "#000",
-    "secondaryColor": "#000",
+    "mainPhotoBorderColor": "#000",
     "font": "1",
-    "iconStyle": "2"
+    "iconStyle": "1"
   },
   "favicon": "/images/madkor/favicon.ico"
 }

@@ -128,17 +128,13 @@
 .cta {
   margin-top: 20px;
   padding: 10px 20px;
-  background: linear-gradient(190deg, #317fec, #0b3c74);
+  background: var(--icons-background);
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1em;
   transition: background-color 0.3s ease;
-}
-
-.cta:hover {
-  background-color: #005bb5;
 }
 
 .contentItem {

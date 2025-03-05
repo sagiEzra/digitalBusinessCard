@@ -17,7 +17,7 @@
     align-items: center;
     margin: 15px;
     padding: 10px;
-    background: linear-gradient(190deg, #1a5bb8, #0b3c74); /* TODO: var */
+    background: var(--icons-background); /* TODO: var */
     color: #fff;
     border-radius: 50%;
     text-decoration: none;
@@ -29,7 +29,7 @@
 }
 
 .button:hover {
-    background: linear-gradient(135deg, #317fec, #0b3c74); /* TODO: var */
+    background: var(--icons-hover-background);
     transform: translateY(-5px);
 }
 
@@ -53,7 +53,7 @@
     justify-content: center;
     margin: 40px auto;
     padding: 15px 20px;
-    background: linear-gradient(190deg, #317fec, #0b3c74); /* TODO: var */
+    background: var(--icons-background); /* TODO: var */
     color: #fff;
     border: 2px solid #000000;
     border-radius: 18px;
@@ -65,7 +65,7 @@
 }
 
 .addContactButton:hover {
-    background: linear-gradient(135deg, #1a5bb8, #0b3c74); 
+    background: var(--icons-hover-background);
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 }

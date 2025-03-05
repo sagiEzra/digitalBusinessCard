@@ -22,7 +22,14 @@ interface Props {
     contact: any;
     testimonials: any;
     sections: { subTitle: string; content: string }[];
-    design: any;
+    design?: {
+      mainPhotoSize?: "m" | "l" | "xl",
+      mainPhotoBorderColor?: string,
+      font?: "1",
+      iconStyle?: "1",
+      iconsBackground?: string;
+      iconsHoverBackground?: string;
+    };
     favicon: string;
   };
 }
@@ -31,8 +38,13 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
   const router = useRouter();
   const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${router.asPath}`;
 
+  const cardStyle = {
+    '--icons-background': data.design?.iconsBackground ?? "linear-gradient(190deg, #317fec, #0b3c74)",
+    '--icons-hover-background': data.design?.iconsHoverBackground ?? "linear-gradient(135deg, #317fec, #0b3c74)",
+  } as React.CSSProperties;
+
   return (
-    <div className={styles.card}>
+    <div className={styles.card} style={cardStyle}>
       <Head>
         <title>{data.name}</title>
 
@@ -55,14 +67,14 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
           coverImage={data.coverImage}
           mainPhoto={data.mainPhoto}
           mainPhotoSize={data.design.mainPhotoSize}
-          mainPhotoBorderColor={data.design.mainColor} //TODO: save mainColor as css variable
+          mainPhotoBorderColor={data.design.mainPhotoBorderColor}
           showDecorativeLines={true}
         />
         <h1 className={styles.name}>{data.name}</h1>
         <p className={styles.headerText}>{data.headerText}</p>
       </div>
 
-      <ContactButtons name={data.name} contact={data.contact} mainColor={data.design.mainColor} />
+      <ContactButtons name={data.name} contact={data.contact} />
 
       <About
         contact={data.contact}

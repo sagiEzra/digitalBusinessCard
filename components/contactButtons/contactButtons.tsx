@@ -5,11 +5,9 @@ import { FaWhatsapp, FaPhone, FaFacebook, FaInstagram, FaEnvelope, FaWaze, FaPlu
 interface ContactButtonsProps {
     name: string,
     contact: any,
-    mainColor?: string,
-    secondaryColor?: string,
 }
 
-export const ContactButtons: React.FC<ContactButtonsProps> = ({ mainColor = '#0b3c74', secondaryColor = '#fff', ...attrs }) => {
+export const ContactButtons: React.FC<ContactButtonsProps> = (attrs) => {
 
     const handleDownloadContact = () => {
         const vCardContent = `BEGIN:VCARD\nVERSION:3.0\nFN:${attrs.name}\nTEL:${attrs.contact.phone}\n${attrs.contact.phone2 ? `TEL:${attrs.contact.phone2}\n` : ''}EMAIL:${attrs.contact.email}\nURL:${attrs.contact.website}\nEND:VCARD`;
@@ -77,7 +75,7 @@ export const ContactButtons: React.FC<ContactButtonsProps> = ({ mainColor = '#0b
                 ))}
             </div>
 
-            <button onClick={handleDownloadContact} className={styles.addContactButton} style={{ borderColor: secondaryColor }}>
+            <button onClick={handleDownloadContact} className={styles.addContactButton}>
                 <span>שמרו אותי באנשי הקשר</span>
                 <FaPlus className={styles.plusIcon} />
             </button>
