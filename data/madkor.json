@@ -1,7 +1,7 @@
 {
   "name": "מד-קור",
-  "mainPhoto": "/images/madkor/main.jpeg",
-  "coverImage": "/images/madkor/cover3.jpeg",
+  "mainPhoto": "https://i.imgur.com/7W9Dv0y.jpeg",
+  "coverImage": "/images/madkor/cover.jpeg",
   "gallery": [
     "/images/madkor/image1.jpeg",
     "/images/madkor/image2.jpeg",
@@ -13,7 +13,9 @@
     "/images/madkor/image8.jpeg",
     "/images/madkor/image9.jpeg",
     "/images/madkor/image10.jpeg",  
-    "/images/madkor/image11.jpeg"
+    "/images/madkor/image11.jpeg",
+    "/images/madkor/image12.jpeg",
+    "/images/madkor/image13.jpeg"
   ],
   "headerText": "מומחים למערכות מיזוג אוויר באילת",
   "about": [

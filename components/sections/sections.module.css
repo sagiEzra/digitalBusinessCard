@@ -58,8 +58,8 @@
 .icon {
   margin-left: 10px;
   transition: transform 0.3s ease;
-  display: flex; /* Add flex display */
-  align-items: center; /* Vertically center the icon */
+  display: flex;
+  align-items: center;
 }
 
 .icon.open {

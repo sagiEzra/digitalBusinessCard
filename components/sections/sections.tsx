@@ -19,7 +19,7 @@ export const Sections: React.FC<SectionsProps> = ({ sections }) => {
   return (
     <div className={styles.sections}>
       {sections.map((section, index) => (
-        <div key={index} className={styles.section}>
+        <div key={index} className={`${styles.section} ${openSections[index] ? styles.open : ''}`}>
           <button className={styles.sectionHeader} onClick={() => handleToggleSection(index)}>
             <span className={styles.subTitle}>{section.subTitle}</span>
             <span className={`${styles.icon} ${openSections[index] ? styles.open : ''}`}>
