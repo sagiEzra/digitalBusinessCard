@@ -30,7 +30,12 @@ interface Props {
       iconsBackground?: string;
       iconsHoverBackground?: string;
     };
-    favicon: string;
+    favicon: {
+      faviconIco: string;
+      favicon32: string;
+      appleFavicon: string;
+      siteManifest: string;
+    };
   };
 }
 
@@ -58,9 +63,15 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
         <meta property="og:type" content="website" />
 
         {/* favicon */}
-        <link rel="icon" href={data.favicon} />
-        <link rel="shortcut icon" href={data.favicon} />
-        <link rel="apple-touch-icon" href={data.favicon} />
+
+        {/* <!-- Standard Favicon for Most Browsers --> */}
+        <link rel="icon" type="image/png" sizes="32x32" href={data.favicon.favicon32}/>
+        {/* <!-- Fallback Favicon for Legacy Browsers --> */}
+        <link rel="shortcut icon" href={data.favicon.faviconIco} />
+        {/* <!-- Apple Touch Icon (For iOS Devices) --> */}
+        <link rel="apple-touch-icon" sizes="180x180" href={data.favicon.appleFavicon} />
+        {/* <!-- Web App Manifest (For Progressive Web Apps) --> */}
+        <link rel="manifest" href={data.favicon.siteManifest}/>
       </Head>
       <div className={styles.header}>
         <CoverMainImage
