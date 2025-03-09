@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./homePage.module.css";
 import { FaClock, FaAccessibleIcon, FaShare, FaGoogle } from "react-icons/fa";
 import { FloatingWhatsAppButton } from "../floationgWhatsAppButton/FloatingWhatsAppButton";
+import Head from "next/head";
 
 const sagiContact = {
     whatsapp: "https://wa.me/972534244489?text=%D7%94%D7%99%D7%99%20%D7%9E%D7%94%20%D7%94%D7%95%D7%9C%D7%9A%3F%0A%D7%90%D7%A0%D7%99%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A2%D7%95%D7%93%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A2%D7%9C%20%D7%94%D7%9B%D7%A8%D7%98%D7%99%D7%A1%20%D7%91%D7%99%D7%A7%D7%95%D7%A8%20%D7%94%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C%D7%99"
@@ -37,6 +38,19 @@ export const HomePage: React.FC = () => {
 
     return (
         <div className={styles.container}>
+            {/* <Head>
+                <title>כרטיס ביקור דיגיטלי</title>
+                <meta name="description" content="הדרך המהירה, הקלה והחדשנית להציג את העסק שלך ולמשוך יותר לקוחות" />
+                <meta property="og:title" content="כרטיס ביקור דיגיטלי" />
+                <meta property="og:description" content="הדרך המהירה, הקלה והחדשנית להציג את העסק שלך ולמשוך יותר לקוחות" />
+                <meta property="og:image" content="/path/to/your/image.jpg" />
+                <meta property="og:url" content="https://yourwebsite.com" />
+                <meta property="og:site_name" content="כרטיס ביקור דיגיטלי" />
+                <meta property="og:type" content="website" />
+                <link rel="icon" href="/favicon.ico" />
+                <link rel="shortcut icon" href="/favicon.ico" />
+                <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+            </Head> */}
             <FloatingWhatsAppButton contact={sagiContact}/>
             <header className={styles.header}>
                 <h1>הכרטיס הדיגיטלי שישדרג את העסק שלך!</h1>
