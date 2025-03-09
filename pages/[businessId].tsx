@@ -19,7 +19,7 @@ export default function BusinessPage({ businessData }: { businessData: any }) {
 //     return { notFound: true };
 //   }
 
-//   return { props: { businessData: docSnap.data(), revalidate: 60 } }; // Revalidate the page every 60 seconds
+//   return { props: { businessData: docSnap.data() } }; // add , revalidate: 300, Revalidate the page every 300 seconds.
 // };
 
 // export const getStaticPaths: GetStaticPaths = async () => {

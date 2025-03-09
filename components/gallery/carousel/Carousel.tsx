@@ -36,7 +36,7 @@ export const Carousel: React.FC<CarouselProps> = ({ images, autoPlay = true, aut
             key={index}
             className={`${styles.imageWrapper} ${index === currentIndex ? styles.active : ''}`}
           >
-            <img src={image} alt={`Slide ${index}`} className={styles.image} />
+            <img src={image} alt={`Slide ${index}`} className={styles.image} loading="lazy"/>
           </div>
         ))}
         <button className={styles.prev} onClick={handlePrev}>
