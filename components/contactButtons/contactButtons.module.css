@@ -17,7 +17,7 @@
     align-items: center;
     margin: 15px;
     padding: 10px;
-    background: var(--icons-background); /* TODO: var */
+    background: var(--icons-background);
     color: #fff;
     border-radius: 50%;
     text-decoration: none;
@@ -25,7 +25,8 @@
     width: 80px;
     height: 80px;
     justify-content: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7); /* TODO: var */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+    /* TODO: var */
 }
 
 .button:hover {
@@ -53,7 +54,7 @@
     justify-content: center;
     margin: 40px auto;
     padding: 15px 20px;
-    background: var(--icons-background); /* TODO: var */
+    background: var(--icons-background);
     color: #fff;
     border: 2px solid #000000;
     border-radius: 18px;
@@ -74,6 +75,73 @@
     font-size: 1.5em;
     margin-right: 10px;
     animation: bounce 1s infinite;
+}
+
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    text-align: center;
+}
+
+.closeButton {
+    color: black;
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 1.9em;
+    cursor: pointer;
+    padding: 0;
+}
+
+.phoneNumbers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.phoneNumber {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background: var(--icons-background);
+    min-width: 110px;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 10px 0;
+    text-decoration: none;
+}
+
+.phoneNumber:hover {
+    background: var(--icons-hover-background);
+    transform: scale(1.05);
+}
+
+.phoneNumber .icon {
+    margin-right: 5px;
 }
 
 @media (max-width: 768px) {

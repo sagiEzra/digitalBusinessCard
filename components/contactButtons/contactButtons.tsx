@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './contactButtons.module.css';
 import { FaWhatsapp, FaPhone, FaFacebook, FaInstagram, FaEnvelope, FaWaze, FaPlus } from 'react-icons/fa';
 
@@ -8,6 +8,8 @@ interface ContactButtonsProps {
 }
 
 export const ContactButtons: React.FC<ContactButtonsProps> = (attrs) => {
+    const [showPhoneModal, setShowPhoneModal] = useState(false);
+    const modalRef = useRef<HTMLDivElement>(null);
 
     const handleDownloadContact = () => {
         const vCardContent = `BEGIN:VCARD\nVERSION:3.0\nFN:${attrs.name}\nTEL:${attrs.contact.phone}\n${attrs.contact.phone2 ? `TEL:${attrs.contact.phone2}\n` : ''}EMAIL:${attrs.contact.email}\nURL:${attrs.contact.website}\nEND:VCARD`;
@@ -29,7 +31,19 @@ export const ContactButtons: React.FC<ContactButtonsProps> = (attrs) => {
             </a>
         ),
         attrs.contact.phone && (
-            <a href={`tel:${attrs.contact.phone}`} className={styles.button} key="phone">
+            <a
+                onClick={(e) => {
+                    e.preventDefault();
+                    if (attrs.contact.phone2) {
+                        setShowPhoneModal(true);
+                    } else {
+                        window.location.href = `tel:${attrs.contact.phone}`;
+                    }
+                }}
+                href={`tel:${attrs.contact.phone}`}
+                className={styles.button}
+                key="phone"
+            >
                 <FaPhone className={styles.icon} />
                 <span>התקשר</span>
             </a>
@@ -65,6 +79,25 @@ export const ContactButtons: React.FC<ContactButtonsProps> = (attrs) => {
         rows.push(contactLinks.slice(i, i + 3));
     }
 
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+                setShowPhoneModal(false);
+            }
+        };
+
+        if (showPhoneModal) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showPhoneModal]);
+
     return (
         <React.Fragment>
             <div className={styles.socialLinks}>
@@ -79,6 +112,33 @@ export const ContactButtons: React.FC<ContactButtonsProps> = (attrs) => {
                 <span>שמרו אותי באנשי הקשר</span>
                 <FaPlus className={styles.plusIcon} />
             </button>
+
+            {showPhoneModal && (
+                <div className={styles.modal}>
+                    <div className={styles.modalContent} ref={modalRef}>
+                        <button onClick={() => setShowPhoneModal(false)} className={styles.closeButton}>×</button>
+                        <h2>התקשר</h2>
+                        <div className={styles.phoneNumbers}>
+                            <a href={`tel:${attrs.contact.phone}`} className={styles.phoneNumber}>
+                                <FaPhone className={styles.icon} />
+                                <span>{attrs.name || 'מספר ראשי'}</span>
+                            </a>
+                            {attrs.contact.phone2 && (
+                                <a href={`tel:${attrs.contact.phone2}`} className={styles.phoneNumber}>
+                                    <FaPhone className={styles.icon} />
+                                    <span>{attrs.contact.phone2Name || 'מספר נוסף'}</span>
+                                </a>
+                            )}
+                            {attrs.contact.phone3 && (
+                                <a href={`tel:${attrs.contact.phone3}`} className={styles.phoneNumber}>
+                                    <FaPhone className={styles.icon} />
+                                    <span>{attrs.contact.phone3Name || 'מספר נוסף'}</span>
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </React.Fragment>
     );
 };
