@@ -19,7 +19,7 @@ export default function BusinessPage({ businessData }: { businessData: any }) {
 //     return { notFound: true };
 //   }
 
-//   return { props: { businessData: docSnap.data() } };
+//   return { props: { businessData: docSnap.data(), revalidate: 60 } }; // Revalidate the page every 60 seconds
 // };
 
 // export const getStaticPaths: GetStaticPaths = async () => {
@@ -28,8 +28,10 @@ export default function BusinessPage({ businessData }: { businessData: any }) {
 //     params: { businessId: doc.id },
 //   }));
 
-//   return { paths, fallback: false }; // Set `true` if you want to allow new businesses dynamically
+//   return { paths, fallback: 'blocking' }; // Handle new paths dynamically
 // };
+
+
 
 
 /* UNCOMMENT THIS CODE TO USE lOCAL JSONS */

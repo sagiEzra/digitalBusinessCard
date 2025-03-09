@@ -1,0 +1,178 @@
+.container {
+    direction: rtl;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #a3c5fc, #1b508e);
+    color: white;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    font-weight: 800;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #317fec, #0b3c74);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+}
+.header p {
+    font-weight: bolder;
+    line-height: 1.5;
+    text-decoration: underline;
+    text-decoration-color: #317fec;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 7px;
+}
+
+/* CTA Button */
+.ctaButton {
+    background: linear-gradient(135deg, #317fec, #031122);
+    color: white;
+    border: 2px solid white;
+    padding: 12px 25px;
+    font-size: 1.2em;
+    font-weight: 800;
+    border-radius: 50px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    margin: 10px;
+}
+
+.waves {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    border-radius: 50%;
+    /* background: rgba(255, 255, 255, 0.5); */
+    transform: translate(-50%, -50%) scale(0);
+    animation: wave 1.6s infinite ease-in-out;
+}
+
+.ctaButton {
+    position: relative;
+    overflow: hidden;
+}
+
+.ctaButton::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    transform: translate(-50%, -50%) scale(0);
+    animation: wave 1.8s infinite ease-in-out;
+}
+
+.ctaButton:hover {
+    transform: scale(1.08);
+}
+
+.ctaButton:active::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.benefits,
+.steps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Benefits and Steps Layout */
+.benefits h2,
+.steps h2 {
+    padding: 15px;
+    color: #0b3c74;
+    background: linear-gradient(135deg, #ffffff, #a8c8f6);
+    border: #1b508e 3px;
+    border-radius: 25px;
+    text-decoration: underline;
+    text-decoration-color: #317fec;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 7px;
+}
+
+/* Benefits and Steps */
+.benefitItem,
+.stepItem {
+    min-width: 250px;
+    font-size: 1.4em;
+    font-weight: 800;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.benefitItem.visible,
+.stepItem.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Benefits and Steps Layout */
+.benefitList,
+.stepList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.benefitItem,
+.stepItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.benefitItem:hover,
+.stepItem:hover {
+    transform: scale(1.05);
+}
+
+/* Footer */
+.footer {
+    font-size: 1.2em;
+    font-weight: 800;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #2857a4, #0b3c74);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(255, 255, 255, 0.2);
+}
+
+.footer p{
+    line-height: 1.5;
+    text-decoration: underline;
+    text-decoration-color: #317fec;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 7px;
+}
+
+@keyframes wave {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
