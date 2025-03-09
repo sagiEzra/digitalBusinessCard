@@ -20,6 +20,7 @@
 }
 .header p {
     font-weight: bolder;
+    font-size: large;
     line-height: 1.5;
     text-decoration: underline;
     text-decoration-color: #317fec;
