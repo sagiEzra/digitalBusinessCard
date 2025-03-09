@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './CoverMainImages.module.css';
+import styles from './coverMainImages.module.css';
 
 interface CoverMainImageProps {
   coverImage: string;
