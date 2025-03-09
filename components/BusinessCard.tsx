@@ -54,6 +54,7 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
     <React.Fragment>
       <div className={styles.card} style={cardStyle}>
         <Head>
+          <script src="https://cdn.userway.org/widget.js" data-account="TwjEIA8m2a"></script>
           <title>{data.name}</title>
 
           {/* og tags */}

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./homePage.module.css";
-import { FaClock, FaAccessibleIcon, FaShare, FaGoogle } from "react-icons/fa";
+import { FaClock, FaShare, FaGoogle, FaInfoCircle } from "react-icons/fa";
 import { FloatingWhatsAppButton } from "../floationgWhatsAppButton/FloatingWhatsAppButton";
 import Head from "next/head";
 
@@ -38,9 +38,10 @@ export const HomePage: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            {/* <Head>
+            <Head>
+                <script src="https://cdn.userway.org/widget.js" data-account="TwjEIA8m2a"></script>
                 <title>כרטיס ביקור דיגיטלי</title>
-                <meta name="description" content="הדרך המהירה, הקלה והחדשנית להציג את העסק שלך ולמשוך יותר לקוחות" />
+                {/* <meta name="description" content="הדרך המהירה, הקלה והחדשנית להציג את העסק שלך ולמשוך יותר לקוחות" />
                 <meta property="og:title" content="כרטיס ביקור דיגיטלי" />
                 <meta property="og:description" content="הדרך המהירה, הקלה והחדשנית להציג את העסק שלך ולמשוך יותר לקוחות" />
                 <meta property="og:image" content="/path/to/your/image.jpg" />
@@ -49,8 +50,8 @@ export const HomePage: React.FC = () => {
                 <meta property="og:type" content="website" />
                 <link rel="icon" href="/favicon.ico" />
                 <link rel="shortcut icon" href="/favicon.ico" />
-                <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-            </Head> */}
+                <link rel="apple-touch-icon" href="/apple-touch-icon.png" /> */}
+            </Head>
             <FloatingWhatsAppButton contact={sagiContact}/>
             <header className={styles.header}>
                 <h1>הכרטיס הדיגיטלי שישדרג את העסק שלך!</h1>
@@ -62,10 +63,10 @@ export const HomePage: React.FC = () => {
                 <h2>למה כרטיס דיגיטלי?</h2>
                 <div className={styles.benefitList}>
                     {[
-                        { icon: <FaClock />, text: "יצירה מהירה תוך כלום זמן" },
-                        { icon: <FaAccessibleIcon />, text: "נגיש בכל זמן ומקום" },
                         { icon: <FaShare />, text: "שיתוף קל עם לקוחות" },
-                        { icon: <FaGoogle />, text: "מופיע בגוגל ומקדם את העסק" }
+                        { icon: <FaClock />, text: "יצירה מהירה תוך כלום זמן" },
+                        { icon: <FaGoogle />, text: "מופיע בגוגל ומקדם את העסק" },
+                        { icon: <FaInfoCircle />, text: "כל הפרטים החשובים במקום אחד" },
                     ].map((item, index) => (
                         <div
                             key={index}
