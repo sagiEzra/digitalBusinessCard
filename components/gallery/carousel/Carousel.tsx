@@ -46,7 +46,7 @@ export const Carousel: React.FC<CarouselProps> = ({ images, autoPlay = true, aut
           <FaChevronLeft />
         </button>
       </div>
-      {images.length <= 12 && <div className={styles.dots}>
+      {images.length <= 3 && <div className={styles.dots}>
         {images.map((_, index) => (
           <div
             key={index}
