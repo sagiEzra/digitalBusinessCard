@@ -7,16 +7,17 @@ interface CoverMainImageProps {
   mainPhotoSize?: "m" | "l" | "xl";
   mainPhotoBorderColor?: string;
   showDecorativeLines?: boolean;
+  isMainPhotoOnTop?: boolean;
 }
 
-export const CoverMainImage: React.FC<CoverMainImageProps> = ({ coverImage, mainPhoto, mainPhotoSize= 'xl', mainPhotoBorderColor = '#fff', showDecorativeLines = false }) => {
+export const CoverMainImage: React.FC<CoverMainImageProps> = ({ coverImage, mainPhoto, mainPhotoSize= 'xl', mainPhotoBorderColor = '#fff', showDecorativeLines = false, isMainPhotoOnTop = false }) => {
   return (
     <div className={styles.coverMainImage}>
       <div className={styles.coverImageContainer}>
         <img className={styles.coverImage} src={coverImage} alt="Cover" />
         {showDecorativeLines && <div className={styles.decorativeLine}></div>}
       </div>
-      <div className={`${styles.mainPhotoContainer} ${styles[mainPhotoSize]}`} style={{ borderColor: mainPhotoBorderColor }}>
+      <div className={`${styles.mainPhotoContainer} ${styles[mainPhotoSize]} ${isMainPhotoOnTop && styles.mainPhotoOnTop}`} style={{ borderColor: mainPhotoBorderColor }}>
         <img className={styles.mainPhoto} src={mainPhoto} alt="Main" />
       </div>
     </div>

@@ -21,11 +21,13 @@ interface Props {
     about: { subTitle?: string; description: string }[];
     businessHours: string;
     contact: any;
-    testimonials: any;
+    testimonials?: any;
     sections: { subTitle: string; content: string }[];
     design?: {
+      imagesDisplay?: "carousel" | "mosaic",
       mainPhotoSize?: "m" | "l" | "xl",
       mainPhotoBorderColor?: string,
+      isMainPhotoOnTop?: boolean,
       font?: "1",
       iconStyle?: "1",
       iconsBackground?: string;
@@ -84,6 +86,7 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
             mainPhotoSize={data.design.mainPhotoSize}
             mainPhotoBorderColor={data.design.mainPhotoBorderColor}
             showDecorativeLines={true}
+            isMainPhotoOnTop={data.design?.isMainPhotoOnTop}
           />
           <h1 className={styles.name}>{data.name}</h1>
           <p className={styles.headerText}>{data.headerText}</p>
@@ -105,7 +108,7 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
           <h2>שעות פעילות</h2>
           <p>{data.businessHours}</p>
         </div>
-        <Gallery images={data.gallery} galleryType='carousel' />
+        <Gallery images={data.gallery} galleryType={data.design?.imagesDisplay} />
         {/* // TODO: add testimonials. */}
         <MapEmbed mapsLink={data.contact.maps} />
         <FloatingWhatsAppButton contact={data.contact} /> {/* // TODO: make optional boolean. */}

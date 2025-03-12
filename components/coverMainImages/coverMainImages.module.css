@@ -35,6 +35,9 @@
   background-color: #fff;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6)
 }
+.mainPhotoOnTop{
+  margin-top: -160px;
+}
 .mainPhotoContainer.m {
   width: 160px;
   height: 160px;

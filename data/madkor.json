@@ -78,6 +78,7 @@
     }
   ],
   "design": {
+    "imagesDisplay": "carousel",
     "mainPhotoSize": "xl",
     "mainPhotoBorderColor": "#000",
     "font": "1",

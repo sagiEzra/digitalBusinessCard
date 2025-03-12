@@ -1,37 +1,39 @@
 /* Footer.module.css */
 .footer {
-    margin-top: 15px;
-    padding-top: 3px;
-    display: flex;
-    flex-direction: column;
-    direction: rtl;
-    align-items: center;
-    background-color: #f4f4f4;
-    border-top: 1px solid rgba(224, 224, 224, 0.5);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.2;
-  }
-  
-  .text {
-    text-align: center;
-    margin: 1px 0;
-    color: #333;
-    font-weight: 400;
-  }
-  
-  .button {
-    margin-top: 5px;
-    padding: 7px 20px;
-    background: #333;
-    color: white;
-    font-weight: 600;
-    text-decoration: none;
-    border-radius: 25px;
-    transition: background 0.3s ease, transform 0.3s ease;
-  }
-  
-  .button:hover {
-    background: #000000;
-  }
-  
+  margin-top: 15px;
+  padding-top: 3px;
+  display: flex;
+  flex-direction: column;
+  direction: rtl;
+  align-items: center;
+  background-color: #f4f4f4;
+  border-top: 1px solid rgba(224, 224, 224, 0.5);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.footer:hover {
+  cursor: pointer;
+}
+
+.text {
+  text-align: center;
+  margin: 1px 0;
+  color: #333;
+  font-weight: 400;
+}
+
+.button {
+  margin-top: 5px;
+  padding: 7px 20px;
+  background: #333;
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 25px;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.button:hover {
+  background: #000000;
+}

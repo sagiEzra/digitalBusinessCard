@@ -1,0 +1,70 @@
+{
+    "name": "The Blue Media",
+    "mainPhoto": "/images/bluemedia/main.webp",
+    "coverImage": "/images/bluemedia/image1.webp",
+    "gallery": [
+        "/images/bluemedia/image1.webp",
+        "/images/bluemedia/image2.webp"
+    ],
+    "headerText": "שיווק דיגיטלי שמביא תוצאות – בלי פוזות, בלי דאווינים! 🚀",
+    "about": [
+        {
+            "description": "נעים להכיר, אני רועי דריהן, הבעלים של The Blue Media, סוכנות שיווק דיגיטלי שממוקדת רק בתוצאות. אנחנו כאן כדי להפוך את הפרסום בפייסבוק, באינסטגרם ובגוגל לכלי שמביא לקוחות אמיתיים, ולא סתם לייקים."
+        },
+        {
+            "subTitle": "מי אנחנו?",
+            "description": "ב-The Blue Media אנחנו מתמחים בניהול דפי אינסטגרם, קידום עסקים בגוגל, יצירת תוכן ויזואלי, וגם ימי צילום מקצועיים שמבטיחים שהתוכן שלך לא רק ייראה טוב – אלא גם ימכור."
+        },
+        {
+            "description": "אם אתה בעל עסק, אתה בטח כבר יודע – פרסום ממומן, יצירת תוכן וניהול קמפיינים זה לא משחק של מזל. זה דורש אסטרטגיית שיווק מדויקת, הבנה של קהל היעד, ושימוש נכון בנתונים כדי למקסם כל שקל שאתה משקיע בפרסום."
+        },
+        {
+            "description": "רוצה שנבנה לך שיווק שמביא לקוחות אמיתיים? השאר פרטים ונתחיל לעבוד!",
+            "dots": [
+                "ניהול דפי אינסטגרם לעסקים",
+                "יצירת תוכן ויזואלי לעסקים",
+                "פרסום חכם בגוגל ופייסבוק",
+                "ימי צילום לעסקים",
+                "קידום ממומן בפייסבוק ובגוגל"
+            ]
+        }
+    ],
+    "businessHours": "זמין על פי פנייה",
+    "contact": {
+        "phone": "+972523456789",
+        "whatsapp": "https://wa.me/972523456789",
+        "instagram": "https://www.instagram.com/thebluemedia"
+    },
+    "testimonials": {
+        "googleReviewsUrl": "https://www.google.com/search?q=the+blue+media"
+    },
+    "sections": [
+        {
+            "subTitle": "למה לבחור בנו",
+            "content": "כי אנחנו חיים את השיווק, מבינים את האלגוריתמים, הטרנדים והפסיכולוגיה שמאחורי הפרסום. כל קמפיין נבנה מתוך דיוק, מחקר והבנה אמיתית של קהל היעד."
+        },
+        {
+            "subTitle": "מה מייחד אותנו?",
+            "content": "אני לא מוכר 'אוויר' – כל אסטרטגיה, קמפיין ותוכן מבוססים על נתונים ומחקר אמיתי. תוצאות מדודמות ולא רק לייקים."
+        },
+        {
+            "subTitle": "מה עושים ב-The Blue Media?",
+            "content": "שיווק דיגיטלי ממוקד, יצירת תוכן ויזואלי, קמפיינים ממומנים בפייסבוק ובגוגל, וניהול דפי אינסטגרם. אנחנו לא מוכרים פוזות, רק תוצאות."
+        }
+    ],
+    "design": {
+        "imagesDisplay": "carousel",
+        "mainPhotoSize": "xl",
+        "mainPhotoBorderColor": "#000",
+        "font": "1",
+        "iconStyle": "1",
+        "iconsBackground": "linear-gradient(135deg, #33b0bd, #268ba6)",
+        "isMainPhotoOnTop": true
+    },
+    "favicon": {
+        "favicon32": "/images/the-blue-media/favicon/favicon-32x32.png",
+        "faviconIco": "/images/the-blue-media/favicon/favicon.ico",
+        "appleFavicon": "/images/the-blue-media/favicon/apple-touch-icon.png",
+        "siteManifest": "/images/the-blue-media/favicon/site.webmanifest"
+    }
+}

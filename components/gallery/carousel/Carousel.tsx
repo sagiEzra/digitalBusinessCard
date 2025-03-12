@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import Slider from "react-slick";
+import { Card, CardMedia, Box } from "@mui/material";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 import styles from './Carousel.module.css';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+// import './carouselOverrides.css'; // Adjust path accordingly
+
 
 interface CarouselProps {
   images: string[];
@@ -8,54 +13,40 @@ interface CarouselProps {
   autoPlayInterval?: number;
 }
 
-export const Carousel: React.FC<CarouselProps> = ({ images, autoPlay = true, autoPlayInterval = 3000 }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    if (autoPlay) {
-      const interval = setInterval(() => {
-        handleNext();
-      }, autoPlayInterval);
-      return () => clearInterval(interval);
-    }
-  }, [autoPlay, autoPlayInterval, images.length]);
-
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+export const Carousel: React.FC<CarouselProps> = ({ images }) => {
+  const settings = {
+    dots: true, // Show navigation dots
+    infinite: true, // Infinite loop
+    speed: 500, // Slide speed
+    slidesToShow: 1, // One image at a time
+    slidesToScroll: 1, // Scroll one image at a time
+    autoplay: true, // Enable autoplay
+    autoplaySpeed: 3000, // Autoplay interval in milliseconds
   };
 
   return (
-    <div className={styles.carousel}>
-      <div className={styles.imageContainer}>
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className={`${styles.imageWrapper} ${index === currentIndex ? styles.active : ''}`}
-          >
-            <img src={image} alt={`Slide ${index}`} className={styles.image} loading="lazy"/>
-          </div>
+    <Box className={styles.carouselContainer}>
+      <Slider {...settings}>
+        {images.map((src, index) => (
+          <Card key={index} className={styles.card}>
+            <CardMedia
+              component="img"
+              image={src}
+              alt={`Image ${index}`}
+              loading='lazy'
+              sx={{
+                height: {
+                  xs: 250, // height for extra-small screens
+                  sm: 300, // height for small screens
+                  md: 400, // height for medium screens
+                  lg: 500, // height for large screens
+                },
+                objectFit: 'cover',
+              }}
+            />
+          </Card>
         ))}
-        <button className={styles.prev} onClick={handlePrev}>
-          <FaChevronRight />
-        </button>
-        <button className={styles.next} onClick={handleNext}>
-          <FaChevronLeft />
-        </button>
-      </div>
-      {images.length <= 3 && <div className={styles.dots}>
-        {images.map((_, index) => (
-          <div
-            key={index}
-            className={`${styles.dot} ${index === currentIndex ? styles.activeDot : ''}`}
-            onClick={() => setCurrentIndex(index)}
-          ></div>
-        ))}
-      </div>
-      }
-    </div>
+      </Slider>
+    </Box>
   );
 };
