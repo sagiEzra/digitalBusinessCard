@@ -1,6 +1,6 @@
 {
   "name": "מד-קור",
-  "mainPhoto": "https://i.imgur.com/7W9Dv0y.jpeg",
+  "mainPhoto": "/images/madkor/main.jpeg",
   "coverImage": "/images/madkor/cover.jpeg",
   "gallery": [
     "/images/madkor/image1.jpeg",
@@ -89,5 +89,16 @@
     "faviconIco": "/images/madkor/favicon/favicon.ico",
     "appleFavicon": "/images/madkor/favicon/apple-touch-icon.png",
     "siteManifest": "/images/madkor/favicon/site.webmanifest"
+  },
+  "seo": {
+    "title": "מדקור - טכנאי מזגנים באילת | תיקון והתקנה מקצועית",
+    "description": "מדקור - שירותי טכנאי מזגנים באילת. תיקון, התקנה ותחזוקה של מערכות מיזוג אוויר מכל הסוגים. שירות מקצועי, אמין ומהיר!",
+    "keywords": "טכנאי מזגנים אילת, תיקון מזגנים באילת, התקנת מזגנים אילת, שירותי מיזוג אוויר אילת, מילוי גז למזגן אילת, טכנאי מזגנים מומלץ",
+
+    "ogTitle": "מדקור - טכנאי מזגנים באילת | תיקון והתקנה מקצועית",
+    "ogDescription": "מחפשים טכנאי מזגנים באילת? מדקור מתמחים בתיקון, התקנה ותחזוקת מערכות מיזוג אוויר. שירות מהיר ואמין במחירים משתלמים!",
+    "ogImage": "/images/madkor/main.jpeg",
+    "ogUrl": "https://mad-kor.co.il",
+    "ogSiteName": "מדקור - שירותי מיזוג אוויר באילת"
   }
 }

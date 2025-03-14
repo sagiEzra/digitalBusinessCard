@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     async rewrites() {
+      console.log("Applying rewrite rules...");
       return [
         {
           source: "/:path*", 

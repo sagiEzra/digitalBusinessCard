@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import styles from './BusinessCard.module.css';
 import { useRouter } from 'next/router';
@@ -40,8 +40,22 @@ interface Props {
       appleFavicon: string;
       siteManifest: string;
     };
+    seo?: {
+      title: string;
+      description: string;
+      keywords: string;
+
+      ogTitle: string;
+      ogDescription: string;
+      ogImage: string;
+      ogUrl: string;
+      ogSiteName: string;
+    };
   };
 }
+
+//TODO: check the new og&seo tags work from page source.
+//TODO: switch to tags from json if exists
 
 export const BusinessCard: React.FC<Props> = ({ data }) => {
   const router = useRouter();
@@ -57,10 +71,15 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
       <div className={styles.card} style={cardStyle}>
         <Head>
           <script src="https://cdn.userway.org/widget.js" data-account="TwjEIA8m2a"></script>
-          <title>{data.name}</title>
 
-          {/* og tags */}
+          {/* SEO */}
+          <title>{data.name}</title>
           <meta name="description" content={data.headerText} />
+
+          <meta name="keywords" content={data.seo?.keywords} />
+          <meta name="robots" content="index, follow" />
+
+          {/* Social Share */}
           <meta property="og:title" content={data.name} />
           <meta property="og:description" content={data.headerText} />
           <meta property="og:image" content={data.mainPhoto} />
@@ -79,6 +98,7 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
           {/* <!-- Web App Manifest (For Progressive Web Apps) --> */}
           <link rel="manifest" href={data.favicon.siteManifest} />
         </Head>
+
         <div className={styles.header}>
           <CoverMainImage
             coverImage={data.coverImage}
