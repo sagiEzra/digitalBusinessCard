@@ -1,16 +1,12 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-    const url = req.nextUrl;
-    const host = req.headers.get("host");
+  const url = req.nextUrl;
 
-    // If the request is from mad-kor.co.il, rewrite it to /madkor
-    if (host === "mad-kor.co.il") {
-        url.pathname = `/madkor${url.pathname}`;
-        return NextResponse.rewrite(url);
-    }
+  // Only rewrite the root URL (/) for mad-kor.co.il
+  if (req.headers.get("host") === "mad-kor.co.il" && url.pathname === "/") {
+    return NextResponse.rewrite(new URL("/madkor", req.url));
+  }
 
-    // Allow other domains to proceed normally
-    return NextResponse.next();
+  return NextResponse.next();
 }
