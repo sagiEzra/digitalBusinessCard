@@ -3,6 +3,7 @@
 }
 
 .slick-dots {
+    visibility: hidden;
     bottom: -30px !important;
 }
 
