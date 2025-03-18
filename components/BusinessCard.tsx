@@ -59,7 +59,7 @@ interface Props {
 
 export const BusinessCard: React.FC<Props> = ({ data }) => {
   const router = useRouter();
-  const currentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${router.asPath}`;
+  const currentUrl = data.seo?.ogUrl ??`${process.env.NEXT_PUBLIC_BASE_URL}${router.asPath}`;
 
   const cardStyle = {
     '--icons-background': data.design?.iconsBackground ?? "linear-gradient(190deg, #317fec, #0b3c74)",
@@ -78,6 +78,7 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
 
           <meta name="keywords" content={data.seo?.keywords} />
           <meta name="robots" content="index, follow" />
+          <link rel="canonical" href={currentUrl}></link>
 
           {/* Social Share */}
           <meta property="og:title" content={data.name} />
