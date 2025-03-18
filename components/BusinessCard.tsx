@@ -73,19 +73,19 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
           <script src="https://cdn.userway.org/widget.js" data-account="TwjEIA8m2a"></script>
 
           {/* SEO */}
-          <title>{data.name}</title>
-          <meta name="description" content={data.headerText} />
+          <title>{data.seo?.title ?? data.name}</title>
+          <meta name="description" content={data.seo?.description ?? data.headerText} />
 
           <meta name="keywords" content={data.seo?.keywords} />
           <meta name="robots" content="index, follow" />
           <link rel="canonical" href={currentUrl}></link>
 
           {/* Social Share */}
-          <meta property="og:title" content={data.name} />
-          <meta property="og:description" content={data.headerText} />
-          <meta property="og:image" content={data.mainPhoto} />
+          <meta property="og:title" content={data.seo?.ogTitle ?? data.name} />
+          <meta property="og:description" content={data.seo?.ogDescription ?? data.headerText} />
+          <meta property="og:image" content={data.seo?.ogImage ?? data.mainPhoto} />
           <meta property="og:url" content={currentUrl} />
-          <meta property="og:site_name" content={data.name} />
+          <meta property="og:site_name" content={data.seo?.ogSiteName ?? data.name} />
           <meta property="og:type" content="website" />
 
           {/* favicon */}
