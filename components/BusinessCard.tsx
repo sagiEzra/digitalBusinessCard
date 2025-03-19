@@ -18,7 +18,7 @@ interface Props {
     mainPhoto: string;
     gallery: string[];
     headerText: string;
-    about: { subTitle?: string; description: string }[];
+    about: { subTitle?: string; description: string, dots?: string[], dotsIcon?: 'dot' | 'dash' | 'circle' | 'vIcon' }[];
     businessHours: string;
     contact: any;
     testimonials?: any;
@@ -40,6 +40,10 @@ interface Props {
       appleFavicon: string;
       siteManifest: string;
     };
+    cta?: {
+        text?: string;
+        buttonText?: string;
+    },
     seo?: {
       title: string;
       description: string;
@@ -119,8 +123,8 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
           contact={data.contact}
           content={data.about}
           title="קצת עלינו" // TODO: make a prop instead of hardcoding
-          highlight="כאן כדי לפתור לך כל בעיה" // TODO: make a prop instead of hardcoding
-          ctaText="חייג ואנחנו לרשותך" // TODO: make a prop instead of hardcoding
+          highlight={data.cta?.text ?? "כאן כדי לפתור לך כל בעיה"}
+          ctaText={data.cta?.buttonText ?? "חייג ואנחנו לרשותך"}
         // onCtaClick={() => alert('Contact us clicked!')}
         />
 

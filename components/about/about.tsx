@@ -4,11 +4,10 @@ import styles from './about.module.css';
 interface AboutProps {
   contact: any;
   title: string;
-  content: { subTitle?: string; description: string; dots?: string[] }[];
+  content: { subTitle?: string; description: string; dots?: string[], dotsIcon?: 'dot' | 'dash' | 'circle' | 'vIcon' }[];
   highlight?: string;
   ctaText?: string;
   onCtaClick?: () => void;
-  bulletStyle?: 'dot' | 'dash' | 'circle' | 'vIcon';
 }
 
 const handleIntersection = (entries: IntersectionObserverEntry[], observer: IntersectionObserver, setVisible: React.Dispatch<React.SetStateAction<boolean>>) => {
@@ -18,7 +17,9 @@ const handleIntersection = (entries: IntersectionObserverEntry[], observer: Inte
   }
 };
 
-export const About: React.FC<AboutProps> = ({ contact, title, content, highlight, ctaText, onCtaClick, bulletStyle = 'vIcon' }) => {
+const defaultBulletStyle = 'vIcon';
+
+export const About: React.FC<AboutProps> = ({ contact, title, content, highlight, ctaText, onCtaClick }) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [titleVisible, setTitleVisible] = useState(false);
 
@@ -39,7 +40,7 @@ export const About: React.FC<AboutProps> = ({ contact, title, content, highlight
     <div className={styles.about}>
       <h2 ref={titleRef} className={`${styles.title} ${titleVisible ? styles.visible : ''}`}>{title}</h2>
       {content.map((item, index) => (
-        <ContentItem key={index} item={item} bulletStyle={bulletStyle} />
+        <ContentItem key={index} item={item} />
       ))}
       {highlight && <span className={styles.highlight}>{highlight}</span>}
       {ctaText && (
@@ -51,7 +52,7 @@ export const About: React.FC<AboutProps> = ({ contact, title, content, highlight
   );
 };
 
-const ContentItem: React.FC<{ item: { subTitle?: string; description: string; dots?: string[] }; bulletStyle: 'dot' | 'dash' | 'circle' | 'vIcon' }> = ({ item, bulletStyle }) => {
+const ContentItem: React.FC<{ item: { subTitle?: string; description: string; dots?: string[]; dotsIcon?: 'dot' | 'dash' | 'circle' | 'vIcon' }; }> = ({ item }) => {
   const subTitleRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const dotsRef = useRef<HTMLUListElement>(null);
@@ -100,7 +101,7 @@ const ContentItem: React.FC<{ item: { subTitle?: string; description: string; do
       {item.subTitle && <h3 ref={subTitleRef} className={`${styles.subTitle} ${subTitleVisible ? styles.visible : ''}`}>{item.subTitle}</h3>}
       <p ref={descriptionRef} className={`${styles.description} ${descriptionVisible ? styles.visible : ''}`}>{renderAboutText(item.description)}</p>
       {item.dots && (
-        <ul ref={dotsRef} className={`${styles.dotsList} ${styles[bulletStyle]} ${dotsVisible ? styles.visible : ''}`}>
+        <ul ref={dotsRef} className={`${styles.dotsList} ${styles[item.dotsIcon ?? defaultBulletStyle]} ${dotsVisible ? styles.visible : ''}`}>
           {item.dots.map((dot, dotIndex) => (
             <li key={dotIndex} style={{ animationDelay: `${dotIndex * 0.2}s` }}>{dot}</li>
           ))}
