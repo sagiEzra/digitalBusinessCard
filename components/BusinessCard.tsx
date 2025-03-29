@@ -101,7 +101,7 @@ export const BusinessCard: React.FC<Props> = ({ data }) => {
           {/* <!-- Apple Touch Icon (For iOS Devices) --> */}
           <link rel="apple-touch-icon" sizes="180x180" href={data.favicon.appleFavicon} />
           {/* <!-- Web App Manifest (For Progressive Web Apps) --> */}
-          <link rel="manifest" href={data.favicon.siteManifest} />
+          {/* <link rel="manifest" href={data.favicon.siteManifest} /> */}
         </Head>
 
         <div className={styles.header}>

@@ -85,8 +85,8 @@
     "iconStyle": "1"
   },
   "favicon": {
-    "favicon32": "/images/madkor/favicon/favicon-32x32.png",
-    "faviconIco": "/images/madkor/favicon/favicon.ico",
+    "favicon32": "/images/madkor/favicon/favicon32.png",
+    "faviconIco": "/images/madkor/favicon/faviconico.ico",
     "appleFavicon": "/images/madkor/favicon/apple-touch-icon.png",
     "siteManifest": "/images/madkor/favicon/site.webmanifest"
   },
