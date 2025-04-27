@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from './sections.module.css';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
@@ -27,12 +27,21 @@ export const Sections: React.FC<SectionsProps> = ({ sections }) => {
             </span>
           </button>
           <div className={`${styles.sectionContent} ${openSections[index] ? styles.open : ''}`}>
-            {section.content}
+            {renderAboutText(section.content)}
           </div>
         </div>
       ))}
     </div>
   );
+};
+
+const renderAboutText = (text: string) => {
+  return text.split('\n').map((line, index) => (
+    <React.Fragment key={index}>
+      {line}
+      <br />
+    </React.Fragment>
+  ));
 };
 
 

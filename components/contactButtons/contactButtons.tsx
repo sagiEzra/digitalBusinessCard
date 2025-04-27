@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './contactButtons.module.css';
-import { FaWhatsapp, FaPhone, FaFacebook, FaInstagram, FaEnvelope, FaWaze, FaPlus } from 'react-icons/fa';
+import { FaWhatsapp, FaPhone, FaFacebook, FaInstagram, FaEnvelope, FaWaze, FaPlus, FaHome } from 'react-icons/fa';
 
 interface ContactButtonsProps {
     name: string,
@@ -64,6 +64,12 @@ export const ContactButtons: React.FC<ContactButtonsProps> = (attrs) => {
             <a href={`mailto:${attrs.contact.email}`} className={styles.button} key="email">
                 <FaEnvelope className={styles.icon} />
                 <span>אימייל</span>
+            </a>
+        ),
+        attrs.contact.catalog && (
+            <a href={attrs.contact.whatsapp} className={styles.button} key="catalog">
+                <FaHome className={styles.icon} />
+                <span>קטלוג</span>
             </a>
         ),
         attrs.contact.waze && (
