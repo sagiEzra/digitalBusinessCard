@@ -6,9 +6,10 @@ interface GalleryProps {
     images: string[];
     galleryType?: 'carousel' | 'mosaic';
     additionalProps?: any; // add any additional props that are specific to the gallery type
+    highlight?: boolean;
 }
 
-export const Gallery: React.FC<GalleryProps> = ({images, galleryType='carousel'}) => {
+export const Gallery: React.FC<GalleryProps> = ({images, galleryType='carousel', highlight}) => {
     const getChoosenGallery = () => {
         switch (galleryType) {
             case 'carousel':
@@ -21,6 +22,8 @@ export const Gallery: React.FC<GalleryProps> = ({images, galleryType='carousel'}
     }
     
     return (
-        getChoosenGallery()
+        <div className={highlight ? 'border-2 border-blue-500 rounded-xl p-2' : ''}>
+            {getChoosenGallery()}
+        </div>
     );
 };
