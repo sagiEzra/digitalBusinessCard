@@ -34,6 +34,7 @@ const ManagePage: React.FC = () => {
       } else {
         setIsAdmin(false);
       }
+      
       // Fetch all cards for this user
       const q = query(
         collection(db, "businesses"),
@@ -55,7 +56,7 @@ const ManagePage: React.FC = () => {
   };
 
   const handleUpgrade = () => {
-    alert("פנה אלינו לשדרוג!");
+    router.push("/upgrade");
   };
 
   const handleEditCard = (routeName: string) => {

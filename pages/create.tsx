@@ -78,7 +78,14 @@ const defaultData: BusinessCardData = {
     { subTitle: "למה לבחור בנו?", description: "לקוחותינו נהנים מיחס אישי ומקצועי.", dots: ["המלצות רבות", "שירות מהיר", "אחריות מלאה"] },
   ],
   businessHours: "",
-  contact: {},
+  contact: {
+    phone: '0534567890',
+    whatsapp: '0534567890',
+    email: '0534567890',
+    facebook: '0534567890',
+    instagram: '0534567890',
+    linkedin: '0534567890'
+  },
   sections: [],
   design: {
     imagesDisplay: "carousel",

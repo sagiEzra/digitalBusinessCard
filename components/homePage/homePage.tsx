@@ -4,6 +4,7 @@ import { FloatingWhatsAppButton } from "../floationgWhatsAppButton/FloatingWhats
 import { FaRocket, FaGem, FaShareAlt, FaStar, FaBolt, FaSyncAlt, FaMoneyBillWave } from 'react-icons/fa';
 import { auth } from "../../lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import PricingCard from "../PricingCard";
 
 
 const cardUrls = [
@@ -314,40 +315,33 @@ export const Homepage: React.FC = () => {
             </p>
           </div>
           <div className="flex flex-col md:flex-row gap-10 justify-center items-center">
-            <div className="bg-white rounded-3xl shadow-xl border border-blue-200 p-10 flex-1 max-w-md text-center animate-fadeIn">
-              <h3 className="text-3xl font-bold mb-4 text-blue-900">כרטיס דיגיטלי אישי</h3>
-              <div className="text-5xl font-extrabold text-blue-700 mb-4">₪890</div>
-              <ul className="text-blue-700 text-lg mb-8 space-y-2">
-                <li>✔️ עיצוב אישי ומותאם</li>
-                <li>✔️ שיתוף מהיר בכל פלטפורמה</li>
-                <li>✔️ עדכון פרטים ללא הגבלה</li>
-                <li>✔️ תמיכה טכנית מלאה</li>
-                <li>✔️ ללא מנוי חודשי</li>
-              </ul>
-              <button
-                onClick={handleCTA}
-                className="bg-gradient-to-r from-blue-200 to-blue-400 hover:from-blue-300 hover:to-blue-500 text-blue-900 font-bold text-xl px-10 py-5 rounded-full shadow-xl hover:scale-105 transition-all duration-300"
-              >
-                התחל עכשיו
-              </button>
-            </div>
-            <div className="bg-white rounded-3xl shadow-xl border border-blue-200 p-10 flex-1 max-w-md text-center animate-fadeIn" style={{ animationDelay: "0.2s" }}>
-              <h3 className="text-3xl font-bold mb-4 text-blue-900">כרטיס לעסקים/צוותים</h3>
-              <div className="text-5xl font-extrabold text-blue-700">₪649</div>
-              <div className="text-lg font-extrabold text-blue-700 mb-4">לכרטיס (מ-3 ומעלה)</div>
-              <ul className="text-blue-700 text-lg mb-8 space-y-2">
-                <li>✔️ כל מה שבחבילה האישית</li>
-                <li>✔️ ניהול מרוכז לכל הצוות</li>
-                <li>✔️ הנחה משמעותית לכמות</li>
-                <li>✔️ תמיכה טכנית מורחבת</li>
-              </ul>
-              <button
-                onClick={handleCTA}
-                className="bg-gradient-to-r from-blue-200 to-blue-400 hover:from-blue-300 hover:to-blue-500 text-blue-900 font-bold text-xl px-10 py-5 rounded-full shadow-xl hover:scale-105 transition-all duration-300"
-              >
-                קבל הצעת מחיר
-              </button>
-            </div>
+            <PricingCard
+              title="כרטיס דיגיטלי אישי"
+              price="₪690"
+              features={[
+                "עיצוב אישי ומותאם",
+                "שיתוף מהיר בכל פלטפורמה",
+                "עדכון פרטים ללא הגבלה",
+                "תמיכה טכנית מלאה",
+                "ללא מנוי חודשי",
+              ]}
+              buttonText="התחל עכשיו"
+              onButtonClick={handleCTA}
+            />
+            <PricingCard
+              title="כרטיס לעסקים/צוותים"
+              price="₪1249"
+              subtitle="מבצע ! 3 כרטיסים"
+              features={[
+                "כל מה שבחבילה האישית",
+                "ניהול מרוכז לכל הצוות",
+                "הנחה משמעותית לכמות",
+                "תמיכה טכנית מורחבת",
+              ]}
+              buttonText="קבל הצעת מחיר"
+              onButtonClick={handleCTA}
+              animationDelay="0.2s"
+            />
           </div>
         </div>
       </section>
@@ -426,7 +420,7 @@ export const Homepage: React.FC = () => {
             <nav>
               <ul className="flex flex-wrap gap-8 text-lg font-semibold">
                 <li>
-                  <a href="#create" className="hover:text-blue-200 transition-colors">צור כרטיס</a>
+                  <a href="create" className="hover:text-blue-200 transition-colors">צור כרטיס</a>
                 </li>
                 <li>
                   <a href="#carousel" className="hover:text-blue-200 transition-colors">דוגמאות</a>

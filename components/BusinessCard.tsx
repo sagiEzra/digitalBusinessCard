@@ -66,6 +66,12 @@ interface Props {
       ogUrl: string;
       ogSiteName: string;
     };
+    premium?: {
+      floatingWhatsapp?: boolean
+      hideFooter?: boolean
+      customDomain: boolean
+      removeBranding: boolean
+    }
   };
   highlightStep?: number;
 }
@@ -162,8 +168,8 @@ export const BusinessCard: React.FC<Props> = ({ data, highlightStep }) => {
         {data.contact?.maps &&
           <MapEmbed mapsLink={data.contact?.maps} />
         }
-        
-        {data.contact?.whatsapp &&
+
+        {data.contact?.whatsapp && data.premium.floatingWhatsapp &&
           <FloatingWhatsAppButton contact={data.contact} />
         }
       </div>

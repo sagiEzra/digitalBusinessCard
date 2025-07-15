@@ -14,6 +14,7 @@ import {
   FaUser,
   FaPhone,
   FaSearch,
+  FaPen,
 } from "react-icons/fa";
 
 // ImageUpload Component
@@ -80,19 +81,39 @@ const ColorPicker: React.FC<{
   onChange: (color: string) => void;
   label: string;
   showGradients?: boolean;
-}> = ({ value, onChange, label, showGradients = false }) => {
-  const colors = ["#3B82F6", "#EF4444", "#10B981", "#F59E0B", "#8B5CF6", "#EC4899", "#06B6D4", "#84CC16", "#6B7280", "#000000"];
+  showWhites?: boolean;
+}> = ({ value, onChange, label, showGradients = false, showWhites = false }) => {
+  // Popular, user-friendly colors that fit many website themes
+  const colors = [
+    "#E5E7EB", // Light Gray (neutral, clean)
+    "#111827", // Dark Gray (text, contrast)
+    "#FFFFFF", // White (universal, clean)
+    "#2563EB", // Blue (primary, modern)
+    "#0EA5E9", // Sky Blue (fresh, tech)
+    "#22C55E", // Green (success, eco, modern)
+    "#F43F5E", // Rose (trendy, friendly)
+    "#F59E42", // Orange (warm, inviting)
+    "#6366F1", // Indigo (professional, modern)
+    "#FBBF24", // Yellow (highlight, attention)
+  ];
+  // Filter out white and near-white colors if showWhites is false
+  const filteredColors = showWhites
+    ? colors
+    : colors.filter(
+        (color) =>
+          color.toUpperCase() !== "#FFFFFF" &&
+          color.toUpperCase() !== "#E5E7EB"
+      );
   const gradients = [
-    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-    "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-    "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-    "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
-    "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-    "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
-    "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
-    "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
-    "linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)",
-    "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)",
+    "linear-gradient(135deg, #111827 0%,rgb(145, 145, 145) 100%)", // Dark Gray to Light Gray
+    "linear-gradient(135deg, #2563EB 0%, #0EA5E9 100%)", // Blue to Sky Blue
+    "linear-gradient(135deg, #0EA5E9 0%, #22C55E 100%)", // Sky Blue to Green
+    "linear-gradient(135deg, #6366F1 0%, #2563EB 100%)", // Indigo to Blue
+    "linear-gradient(135deg, #6366F1 0%, #F43F5E 100%)", // Indigo to Rose
+    "linear-gradient(135deg, #22C55E 0%, #FBBF24 100%)", // Green to Yellow
+    "linear-gradient(135deg, #FBBF24 0%, #F43F5E 100%)", // Yellow to Rose
+    "linear-gradient(135deg, #F43F5E 0%, #F59E42 100%)", // Rose to Orange
+    "linear-gradient(135deg, #F59E42 0%, #FBBF24 100%)", // Orange to Yellow
   ];
   return (
     <div>
@@ -100,7 +121,7 @@ const ColorPicker: React.FC<{
       <div className="mb-4">
         <h4 className="text-sm font-medium text-blue-700 mb-2">צבעים מוצקים</h4>
         <div className="flex flex-wrap gap-2">
-          {colors.map((color) => (
+          {filteredColors.map((color) => (
             <button
               key={color}
               onClick={() => onChange(color)}
@@ -262,11 +283,37 @@ interface BusinessCardData {
     ogSiteName: string
   }
   premium?: {
+    floatingWhatsapp?: boolean
     hideFooter?: boolean
     customDomain: boolean
     removeBranding: boolean
   }
 }
+
+const PremiumOptionCheckbox: React.FC<{
+  id: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  label: string;
+  price: number;
+  recommended?: boolean;
+}> = ({ id, checked, onChange, label, price, recommended }) => (
+  <div className="flex items-center gap-3 relative">
+    <input
+      type="checkbox"
+      id={id}
+      checked={checked}
+      onChange={e => onChange(e.target.checked)}
+      className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+    />
+    <label htmlFor={id} className="text-blue-900 font-medium flex items-center gap-2">
+      {label} (₪{price})
+      {recommended && (
+        <span className="ml-2 px-2 py-0.5 bg-blue-200 text-blue-700 rounded-full text-s font-bold">אהוב במיוחד</span>
+      )}
+    </label>
+  </div>
+);
 
 const CardEditor: React.FC<{
   initialData: BusinessCardData;
@@ -424,6 +471,27 @@ const CardEditor: React.FC<{
     setRouteError("");
   };
 
+  // Calculate total price
+  const basePrice = 590;
+  const premiumPrices = {
+    floatingWhatsapp: 32,
+    hideFooter: 100,
+    customDomain: 120,
+    removeBranding: 100,
+  };
+  const premium = (data.premium ?? {}) as {
+    floatingWhatsapp?: boolean;
+    hideFooter?: boolean;
+    customDomain?: boolean;
+    removeBranding?: boolean;
+  };
+  const totalPrice =
+    basePrice +
+    (premium?.floatingWhatsapp ? premiumPrices.floatingWhatsapp : 0) +
+    (premium?.hideFooter ? premiumPrices.hideFooter : 0) +
+    (premium?.customDomain ? premiumPrices.customDomain : 0) +
+    (premium?.removeBranding ? premiumPrices.removeBranding : 0);
+
   // Steps definition (replace 'צור' with 'ערוך' in editMode)
   const steps = [
     {
@@ -495,6 +563,7 @@ const CardEditor: React.FC<{
             value={data.design?.mainPhotoBorderColor || "#3B82F6"}
             onChange={(color) => updateData("design.mainPhotoBorderColor", color)}
             label="צבע מסגרת תמונה ראשית"
+            showWhites={true}
           />
         </div>
       ),
@@ -645,7 +714,7 @@ const CardEditor: React.FC<{
     },
     {
       title: "תוכן העסק",
-      icon: <FaImage />,
+      icon: <FaPen />,
       component: (
         <div className="space-y-6">
           <div className="text-center mb-8">
@@ -836,42 +905,35 @@ const CardEditor: React.FC<{
             <p className="text-blue-700 text-lg">שדרגו את הכרטיס שלכם עם תוספות בתשלום</p>
           </div>
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                id="hideFooter"
-                checked={data.premium?.hideFooter || false}
-                onChange={e => updateData('premium.hideFooter', e.target.checked)}
-                className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
-              />
-              <label htmlFor="hideFooter" className="text-blue-900 font-medium">
-                הסתר כותרת תחתונה (₪10)
-              </label>
-            </div>
-            <div className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                id="customDomain"
-                checked={data.premium?.customDomain || false}
-                onChange={e => updateData('premium.customDomain', e.target.checked)}
-                className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
-              />
-              <label htmlFor="customDomain" className="text-blue-900 font-medium">
-                דומיין מותאם אישית (₪50)
-              </label>
-            </div>
-            <div className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                id="removeBranding"
-                checked={data.premium?.removeBranding || false}
-                onChange={e => updateData('premium.removeBranding', e.target.checked)}
-                className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
-              />
-              <label htmlFor="removeBranding" className="text-blue-900 font-medium">
-                הסרת מיתוג (₪30)
-              </label>
-            </div>
+            <PremiumOptionCheckbox
+              id="floatingWhatsapp"
+              checked={!!data.premium?.floatingWhatsapp}
+              onChange={val => updateData('premium.floatingWhatsapp', val)}
+              label="כפתור ווצאפ מרחף בפינה"
+              price={premiumPrices.floatingWhatsapp}
+              recommended={true}
+            />
+            <PremiumOptionCheckbox
+              id="hideFooter"
+              checked={!!data.premium?.hideFooter}
+              onChange={val => updateData('premium.hideFooter', val)}
+              label="הסתר כותרת תחתונה"
+              price={premiumPrices.hideFooter}
+            />
+            <PremiumOptionCheckbox
+              id="customDomain"
+              checked={!!data.premium?.customDomain}
+              onChange={val => updateData('premium.customDomain', val)}
+              label="דומיין מותאם אישית"
+              price={premiumPrices.customDomain}
+            />
+            <PremiumOptionCheckbox
+              id="removeBranding"
+              checked={!!data.premium?.removeBranding}
+              onChange={val => updateData('premium.removeBranding', val)}
+              label="הסרת מיתוג"
+              price={premiumPrices.removeBranding}
+            />
           </div>
         </div>
       ),
@@ -928,7 +990,7 @@ const CardEditor: React.FC<{
           <div className="sticky top-0 z-50 bg-white py-4 px-6 border-b border-blue-100 flex items-center justify-center">
             <div className="bg-white rounded-xl shadow px-4 py-2 border border-green-200 flex items-center gap-2">
               <span className="text-base font-bold text-blue-700">סך הכל לתשלום</span>
-              <span className="text-xl font-extrabold text-green-600">₪{590}</span>
+              <span className="text-xl font-extrabold text-green-600">₪{totalPrice}</span>
             </div>
           </div>
           <div
@@ -1000,7 +1062,7 @@ const CardEditor: React.FC<{
       <main className="flex-1 ml-[350px] min-h-screen flex flex-col items-center justify-center">
         <div className="w-full max-w-3xl mx-auto flex flex-col min-h-screen relative">
           <div className="sticky top-0 z-30 bg-gradient-to-r from-blue-900 to-blue-700 rounded-b-2xl shadow-lg mb-8 py-4 px-2">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center p-2">
               {steps.map((step, index) => (
                 <button
                   key={index}
