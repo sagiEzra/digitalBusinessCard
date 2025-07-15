@@ -3,6 +3,67 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f8f8f8;
+  font-family: 'Plus Jakarta Sans', 'Inter', 'Manrope', 'Segoe UI', Arial, sans-serif;
+  background-color: #F8FAFC;
+  color: #111827;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', 'Inter', 'Manrope', 'Segoe UI', Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Luxury fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 0 0 #3B82F633; }
+  50% { box-shadow: 0 0 0 8px #3B82F655; }
+}
+
+.fade-in {
+  animation: fadeIn 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.fade-in-up {
+  animation: fadeInUp 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.bounce {
+  animation: bounce 1.2s infinite;
+}
+.pulse {
+  animation: pulse 1.5s infinite;
+}
+.glow {
+  animation: glow 1.5s infinite;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(44, 120, 220, 0.18), 0 1.5px 8px 0 rgba(0,0,0,0.08);
 }

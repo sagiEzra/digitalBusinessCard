@@ -1,10 +1,11 @@
 "use client"
 
 import { FloatingWhatsAppButton } from "../floationgWhatsAppButton/FloatingWhatsAppButton"
-import { FaRocket, FaGem, FaShareAlt, FaStar, FaBolt, FaSyncAlt, FaMoneyBillWave } from 'react-icons/fa';
+import { FaRocket, FaGem, FaShareAlt, FaStar, FaBolt, FaSyncAlt, FaMoneyBillWave, FaPen } from 'react-icons/fa';
 import { auth } from "../../lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import PricingCard from "../PricingCard";
+import { theme } from '../../styles/theme';
 
 
 const cardUrls = [
@@ -316,21 +317,8 @@ export const Homepage: React.FC = () => {
           </div>
           <div className="flex flex-col md:flex-row gap-10 justify-center items-center">
             <PricingCard
-              title="כרטיס דיגיטלי אישי"
-              price="₪690"
-              features={[
-                "עיצוב אישי ומותאם",
-                "שיתוף מהיר בכל פלטפורמה",
-                "עדכון פרטים ללא הגבלה",
-                "תמיכה טכנית מלאה",
-                "ללא מנוי חודשי",
-              ]}
-              buttonText="התחל עכשיו"
-              onButtonClick={handleCTA}
-            />
-            <PricingCard
               title="כרטיס לעסקים/צוותים"
-              price="₪1249"
+              price="₪990"
               subtitle="מבצע ! 3 כרטיסים"
               features={[
                 "כל מה שבחבילה האישית",
@@ -341,6 +329,19 @@ export const Homepage: React.FC = () => {
               buttonText="קבל הצעת מחיר"
               onButtonClick={handleCTA}
               animationDelay="0.2s"
+            />
+            <PricingCard
+              title="כרטיס דיגיטלי אישי"
+              price="₪390"
+              features={[
+                "עיצוב אישי ומותאם",
+                "שיתוף מהיר בכל פלטפורמה",
+                "עדכון פרטים ללא הגבלה",
+                "תמיכה טכנית מלאה",
+                "ללא מנוי חודשי",
+              ]}
+              buttonText="התחל עכשיו"
+              onButtonClick={handleCTA}
             />
           </div>
         </div>

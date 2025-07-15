@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import { BusinessCard, SerializedBusinessCard } from "./BusinessCard";
-import { addDoc, collection, doc, setDoc, getDoc, query, where, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc, getDoc, query, where, getDocs, deleteDoc } from "firebase/firestore";
 import { db, auth } from "../lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { roleLimits } from '../lib/roles';
@@ -17,6 +17,7 @@ import {
   FaSearch,
   FaPen,
 } from "react-icons/fa";
+import { theme } from '../styles/theme';
 
 // ImageUpload Component
 const ImageUpload: React.FC<{
@@ -155,6 +156,8 @@ const ColorPicker: React.FC<{
         color.toUpperCase() !== "#E5E7EB"
     );
   const gradients = [
+    "linear-gradient(190deg, #317fec, #0b3c74)",
+    "linear-gradient(135deg, #317fec, #0b3c74)",
     "linear-gradient(135deg, #111827 0%,rgb(145, 145, 145) 100%)", // Dark Gray to Light Gray
     "linear-gradient(135deg, #2563EB 0%, #0EA5E9 100%)", // Blue to Sky Blue
     "linear-gradient(135deg, #0EA5E9 0%, #22C55E 100%)", // Sky Blue to Green

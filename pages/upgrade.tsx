@@ -6,7 +6,7 @@ const upgradeOptions = [
   {
     key: "personal",
     title: "כרטיס דיגיטלי אישי",
-    price: "₪690",
+    price: "₪390",
     features: [
       "עיצוב אישי ומותאם",
       "שיתוף מהיר בכל פלטפורמה",
@@ -19,7 +19,7 @@ const upgradeOptions = [
   {
     key: "team",
     title: "כרטיס לעסקים/צוותים",
-    price: "₪1249",
+    price: "₪990",
     subtitle: "מבצע ! 3 כרטיסים",
     features: [
       "כל מה שבחבילה האישית",
