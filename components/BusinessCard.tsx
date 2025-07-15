@@ -10,69 +10,70 @@ import { Gallery } from './gallery/gallery';
 import { FloatingWhatsAppButton } from './floationgWhatsAppButton/FloatingWhatsAppButton';
 import { Footer } from './footer/footer';
 
-interface Props {
-  data: {
-    name: string;
-    coverImage: string;
-    mainPhoto: string;
-    gallery: string[];
-    headerText: string;
-    about: { subTitle?: string; description: string, dots?: string[], dotsIcon?: 'dot' | 'dash' | 'circle' | 'vIcon' }[];
-    businessHours: string;
-    contact: {
-      phone?: string;
-      whatsapp?: string;
-      email?: string;
-      facebook?: string;
-      instagram?: string;
-      website?: string;
-      linkedin?: string;
-      maps?: string;
-      waze?: string;
-    };
-    testimonials?: {
-      googleReviewsUrl?: string;
-    };
-    sections: { subTitle: string; content: string }[];
-    design?: {
-      imagesDisplay?: "carousel" | "mosaic",
-      mainPhotoSize?: "m" | "l" | "xl",
-      mainPhotoBorderColor?: string,
-      isMainPhotoOnTop?: boolean,
-      font?: "1",
-      iconStyle?: "1",
-      iconsBackground?: string;
-      iconsHoverBackground?: string;
-      hideFooter?: boolean;
-    };
-    favicon?: {
-      faviconIco: string;
-      favicon32: string;
-      appleFavicon: string;
-      siteManifest: string;
-    };
-    cta?: {
-      text?: string;
-      buttonText?: string;
-    },
-    seo?: {
-      title: string;
-      description: string;
-      keywords: string;
-
-      ogTitle: string;
-      ogDescription: string;
-      ogImage: string;
-      ogUrl: string;
-      ogSiteName: string;
-    };
-    premium?: {
-      floatingWhatsapp?: boolean
-      hideFooter?: boolean
-      customDomain: boolean
-      removeBranding: boolean
-    }
+export interface SerializedBusinessCard {
+  name: string;
+  coverImage: string;
+  mainPhoto: string;
+  gallery: string[];
+  headerText: string;
+  about: { subTitle?: string; description: string; dots?: string[]; dotsIcon?: "dot" | "dash" | "circle" | "vIcon" }[];
+  businessHours: string;
+  contact: {
+    phone?: string;
+    whatsapp?: string;
+    email?: string;
+    facebook?: string;
+    instagram?: string;
+    website?: string;
+    linkedin?: string;
+    maps?: string;
+    waze?: string;
+    catalog?: string;
   };
+  testimonials?: {
+    googleReviewsUrl?: string;
+  };
+  sections: { subTitle: string; content: string }[];
+  design?: {
+    imagesDisplay?: "carousel" | "mosaic";
+    mainPhotoSize?: "m" | "l" | "xl";
+    mainPhotoBorderColor?: string;
+    isMainPhotoOnTop?: boolean;
+    font?: "1";
+    iconStyle?: "1";
+    iconsBackground?: string;
+    iconsHoverBackground?: string;
+    hideFooter?: boolean;
+  };
+  favicon?: {
+    faviconIco: string;
+    favicon32: string;
+    appleFavicon: string;
+    siteManifest: string;
+  };
+  cta?: {
+    text?: string;
+    buttonText?: string;
+  };
+  seo?: {
+    title: string;
+    description: string;
+    keywords: string;
+    ogTitle: string;
+    ogDescription: string;
+    ogImage: string;
+    ogUrl: string;
+    ogSiteName: string;
+  };
+  premium?: {
+    floatingWhatsapp?: boolean;
+    hideFooter?: boolean;
+    customDomain: boolean;
+    removeBranding: boolean;
+  };
+}
+export interface Props {
+  data: SerializedBusinessCard
   highlightStep?: number;
 }
 

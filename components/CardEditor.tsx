@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
-import { BusinessCard } from "./BusinessCard";
+import { BusinessCard, SerializedBusinessCard } from "./BusinessCard";
 import { addDoc, collection, doc, setDoc, getDoc, query, where, getDocs } from "firebase/firestore";
 import { db, auth } from "../lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { roleLimits } from '../lib/roles';
 import {
   FaUpload,
   FaTrash,
@@ -19,24 +20,63 @@ import {
 
 // ImageUpload Component
 const ImageUpload: React.FC<{
-  value: string;
-  onChange: (url: string) => void;
+  value: File | string;
+  onChange: (file: File | null) => void;
   label: string;
   className?: string;
 }> = ({ value, onChange, label, className = "" }) => {
   const [isDragging, setIsDragging] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
+  const previewUrlRef = React.useRef<string | null>(null);
+
+  useEffect(() => {
+    if (value instanceof File) {
+      const url = URL.createObjectURL(value);
+      setPreviewUrl(url);
+      // Revoke previous object URL
+      if (previewUrlRef.current && previewUrlRef.current !== url) {
+        URL.revokeObjectURL(previewUrlRef.current);
+      }
+      previewUrlRef.current = url;
+      return () => {
+        if (previewUrlRef.current) {
+          URL.revokeObjectURL(previewUrlRef.current);
+          previewUrlRef.current = null;
+        }
+      };
+    } else if (typeof value === "string") {
+      setPreviewUrl(value);
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current);
+        previewUrlRef.current = null;
+      }
+    } else {
+      setPreviewUrl("");
+      if (previewUrlRef.current) {
+        URL.revokeObjectURL(previewUrlRef.current);
+        previewUrlRef.current = null;
+      }
+    }
+  }, [value]);
+
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
       setIsDragging(false);
       const files = Array.from(e.dataTransfer.files);
       if (files[0]) {
-        const url = URL.createObjectURL(files[0]);
-        onChange(url);
+        onChange(files[0]);
       }
     },
     [onChange]
   );
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      onChange(e.target.files[0]);
+    }
+  };
+
   return (
     <div className={`relative ${className}`}>
       <div
@@ -52,12 +92,22 @@ const ImageUpload: React.FC<{
         }}
         onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
+        onClick={(e) => {
+          // Prevent input trigger if clicking remove button
+          if ((e.target as HTMLElement).closest('button')) return;
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = 'image/*';
+          input.onchange = (e: any) => handleFileChange(e);
+          input.click();
+        }}
+        style={{ cursor: 'pointer' }}
       >
-        {value ? (
+        {previewUrl ? (
           <div className="relative">
-            <img src={value || "/placeholder.svg"} alt={label} className="w-full h-32 object-cover rounded-lg mb-2" />
+            <img src={previewUrl} alt={label} className="w-full h-32 object-cover rounded-lg mb-2" />
             <button
-              onClick={() => onChange("")}
+              onClick={e => { e.stopPropagation(); onChange(null); }}
               className="absolute top-2 left-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
             >
               <FaTrash className="text-xs" />
@@ -100,10 +150,10 @@ const ColorPicker: React.FC<{
   const filteredColors = showWhites
     ? colors
     : colors.filter(
-        (color) =>
-          color.toUpperCase() !== "#FFFFFF" &&
-          color.toUpperCase() !== "#E5E7EB"
-      );
+      (color) =>
+        color.toUpperCase() !== "#FFFFFF" &&
+        color.toUpperCase() !== "#E5E7EB"
+    );
   const gradients = [
     "linear-gradient(135deg, #111827 0%,rgb(145, 145, 145) 100%)", // Dark Gray to Light Gray
     "linear-gradient(135deg, #2563EB 0%, #0EA5E9 100%)", // Blue to Sky Blue
@@ -171,6 +221,7 @@ const RouteNameModal: React.FC<{
   editMode?: boolean;
 }> = ({ isOpen, onSubmit, onCancel, error, editMode }) => {
   const [routeName, setRouteName] = useState("");
+  const router = useRouter();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (routeName.trim()) {
@@ -201,7 +252,22 @@ const RouteNameModal: React.FC<{
             />
             <p className="text-blue-500 text-sm mt-1">רק אותיות, מספרים ומקפים מותרים</p>
           </div>
-          {error && (
+          {error && error === 'needUpgrade' && (
+            <div className="flex flex-col items-center mt-4">
+              <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-2 text-blue-800 text-center">
+                עוד רגע וסיימת, רק שדרג - וזה באוויר.
+              </div>
+              <button
+                type="button"
+                onClick={() => router.push('/upgrade')}
+                className="bg-gradient-to-r from-blue-100 to-blue-300 text-blue-900 font-bold py-3 px-8 rounded-full shadow hover:from-blue-200 hover:to-blue-400 transition-transform duration-200 text-lg border border-blue-100 hover:scale-105"
+                style={{ minWidth: 220 }}
+              >
+                🚀 שדרג עכשיו
+              </button>
+            </div>
+          )}
+          {error && error !== 'needUpgrade' && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
               <p className="text-red-600 text-sm">{error}</p>
             </div>
@@ -228,67 +294,12 @@ const RouteNameModal: React.FC<{
   );
 };
 
-interface BusinessCardData {
-  name: string
-  coverImage: string
-  mainPhoto: string
-  gallery: string[]
-  headerText: string
-  about: { subTitle?: string; description: string; dots?: string[]; dotsIcon?: "dot" | "dash" | "circle" | "vIcon" }[]
-  businessHours: string
-  contact: {
-    phone?: string
-    whatsapp?: string
-    email?: string
-    facebook?: string
-    instagram?: string
-    website?: string
-    linkedin?: string
-    maps?: string
-    waze?: string
-    catalog?: string
-  }
-  testimonials?: {
-    googleReviewsUrl?: string
-  }
-  sections: { subTitle: string; content: string }[]
-  design?: {
-    imagesDisplay?: "carousel" | "mosaic"
-    mainPhotoSize?: "m" | "l" | "xl"
-    mainPhotoBorderColor?: string
-    isMainPhotoOnTop?: boolean
-    font?: "1"
-    iconStyle?: "1"
-    iconsBackground?: string
-    iconsHoverBackground?: string
-  }
-  favicon?: {
-    faviconIco: string
-    favicon32: string
-    appleFavicon: string
-    siteManifest: string
-  }
-  cta?: {
-    text?: string
-    buttonText?: string
-  }
-  seo?: {
-    title: string
-    description: string
-    keywords: string
-    ogTitle: string
-    ogDescription: string
-    ogImage: string
-    ogUrl: string
-    ogSiteName: string
-  }
-  premium?: {
-    floatingWhatsapp?: boolean
-    hideFooter?: boolean
-    customDomain: boolean
-    removeBranding: boolean
-  }
-}
+// Override image fields to allow File | string types
+export type BusinessCardData = Omit<SerializedBusinessCard, 'coverImage' | 'mainPhoto' | 'gallery'> & {
+  coverImage: File | string;
+  mainPhoto: File | string;
+  gallery: (File | string)[];
+};
 
 const PremiumOptionCheckbox: React.FC<{
   id: string;
@@ -315,18 +326,50 @@ const PremiumOptionCheckbox: React.FC<{
   </div>
 );
 
+// Helper for Cloudinary upload
+async function uploadImageToCloudinary(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', 'unsigned_preset'); // Replace with your preset
+
+  const res = await fetch('https://api.cloudinary.com/v1_1/dzvwh5lbg/image/upload', {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!res.ok) {
+    throw new Error('Cloudinary upload failed');
+  }
+
+  const data = await res.json();
+  return data.secure_url; // Return the uploaded image URL
+}
+
+// Helper to extract public_id from Cloudinary URL
+function publicIdFromUrl(url: string): string | null {
+  const match = url.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.[a-z]+)?$/i);
+  return match ? match[1] : null;
+}
+
 const CardEditor: React.FC<{
   initialData: BusinessCardData;
   editMode: boolean;
   routeName?: string;
 }> = ({ initialData, editMode, routeName }) => {
+  // Use the adapted BusinessCardData type for state
   const [data, setData] = useState<BusinessCardData>(initialData);
+  const [pendingUploads, setPendingUploads] = useState<{
+    mainPhoto?: File;
+    coverImage?: File;
+    gallery?: { idx: number; file: File }[];
+  }>({});
   const [currentStep, setCurrentStep] = useState(0);
   const [isValid, setIsValid] = useState(false);
   const [showRouteModal, setShowRouteModal] = useState(false);
   const [routeError, setRouteError] = useState("");
   const [userData, setUserData] = useState<{ user: any; data: BusinessCardData } | null>(null);
   const router = useRouter();
+  const [previousUrls, setPreviousUrls] = useState<{ mainPhoto?: string; coverImage?: string; gallery?: string[] }>({});
 
   // TODO: add localstorage saving progress on create page.
 
@@ -349,7 +392,13 @@ const CardEditor: React.FC<{
         const q = query(collection(db, "businesses"), where("routeName", "==", routeName));
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
-          setData(querySnapshot.docs[0].data() as any);
+          const docData = querySnapshot.docs[0].data() as any;
+          setData(docData);
+          setPreviousUrls({
+            mainPhoto: docData.mainPhoto,
+            coverImage: docData.coverImage,
+            gallery: Array.isArray(docData.gallery) ? docData.gallery : [],
+          });
         }
       })();
     }
@@ -361,6 +410,7 @@ const CardEditor: React.FC<{
     setIsValid(isFormValid);
   }, [data]);
 
+  // Update updateData to handle preview and pendingUploads
   const updateData = (path: string, value: any) => {
     setData((prev: any) => {
       const newData = { ...prev };
@@ -373,6 +423,36 @@ const CardEditor: React.FC<{
       current[keys[keys.length - 1]] = value;
       return newData;
     });
+  };
+
+  // Custom handler for image fields to support preview and upload
+  const handleImageChange = (field: 'mainPhoto' | 'coverImage', file: File | null) => {
+    if (file) {
+      const url = URL.createObjectURL(file);
+      updateData(field, url); // for preview
+      setPendingUploads((prev) => ({ ...prev, [field]: file }));
+    } else {
+      updateData(field, "");
+      setPendingUploads((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  // Custom handler for gallery
+  const handleGalleryAdd = (file: File) => {
+    const url = URL.createObjectURL(file);
+    updateData("gallery", [...(data.gallery || []), url]);
+    setPendingUploads((prev) => ({
+      ...prev,
+      gallery: [...(prev.gallery || []), { idx: (data.gallery || []).length, file }],
+    }));
+  };
+  const handleGalleryRemove = (idx: number) => {
+    const newGallery = (data.gallery || []).filter((_, i) => i !== idx);
+    updateData("gallery", newGallery);
+    setPendingUploads((prev) => ({
+      ...prev,
+      gallery: (prev.gallery || []).filter((g) => g.idx !== idx),
+    }));
   };
 
   const addArrayItem = (path: string, defaultItem: any) => {
@@ -388,6 +468,55 @@ const CardEditor: React.FC<{
     );
   };
 
+  // Helper to upload images and return data ready for Firestore
+  const prepareImagesAndGetDataToSave = async (data: BusinessCardData) => {
+    let mainPhotoUrl = data.mainPhoto;
+    let coverImageUrl = data.coverImage;
+    let galleryUrls: string[] = Array.isArray(data.gallery) ? data.gallery.filter((g): g is string => typeof g === 'string') : [];
+
+    // mainPhoto
+    if (pendingUploads.mainPhoto) {
+      mainPhotoUrl = await uploadImageToCloudinary(pendingUploads.mainPhoto);
+    } else if (typeof mainPhotoUrl === 'string' && mainPhotoUrl.startsWith('blob:')) {
+      // If user never uploaded, but preview is blob, remove
+      mainPhotoUrl = '';
+    }
+    // coverImage
+    if (pendingUploads.coverImage) {
+      coverImageUrl = await uploadImageToCloudinary(pendingUploads.coverImage);
+    } else if (typeof coverImageUrl === 'string' && coverImageUrl.startsWith('blob:')) {
+      coverImageUrl = '';
+    }
+    // gallery
+    if (Array.isArray(data.gallery)) {
+      galleryUrls = await Promise.all(
+        data.gallery.map(async (item, idx) => {
+          // If this gallery item is a blob, find its File in pendingUploads
+          if (typeof item === 'string' && item.startsWith('blob:')) {
+            const found = (pendingUploads.gallery || []).find((g) => g.idx === idx);
+            if (found) {
+              return await uploadImageToCloudinary(found.file);
+            }
+            return '';
+          } else if (typeof item === 'string') {
+            return item;
+          } else {
+            return '';
+          }
+        })
+      );
+      galleryUrls = galleryUrls.filter(Boolean) as string[];
+    }
+    // Prepare the data object to save
+    const dataToSave = {
+      ...data,
+      mainPhoto: mainPhotoUrl,
+      coverImage: coverImageUrl,
+      gallery: galleryUrls,
+    };
+    return dataToSave;
+  };
+
   // Save logic
   const handleSave = async () => {
     try {
@@ -395,9 +524,56 @@ const CardEditor: React.FC<{
       const { user } = userData;
       const docId = user.uid;
       if (!docId) return;
+      // --- Deletion logic for removed images (edit mode only) ---
       if (editMode) {
+        const dataToSave = await prepareImagesAndGetDataToSave(data);
+        if (previousUrls) {
+          const removedPublicIds: string[] = [];
+          // mainPhoto
+          if (
+            previousUrls.mainPhoto &&
+            previousUrls.mainPhoto !== dataToSave.mainPhoto &&
+            typeof previousUrls.mainPhoto === 'string' &&
+            previousUrls.mainPhoto.includes('cloudinary.com')
+          ) {
+            const id = publicIdFromUrl(previousUrls.mainPhoto);
+            if (id) removedPublicIds.push(id);
+          }
+          // coverImage
+          if (
+            previousUrls.coverImage &&
+            previousUrls.coverImage !== dataToSave.coverImage &&
+            typeof previousUrls.coverImage === 'string' &&
+            previousUrls.coverImage.includes('cloudinary.com')
+          ) {
+            const id = publicIdFromUrl(previousUrls.coverImage);
+            if (id) removedPublicIds.push(id);
+          }
+          // gallery
+          const prevGallery = Array.isArray(previousUrls.gallery) ? previousUrls.gallery : [];
+          const newGallery = Array.isArray(dataToSave.gallery) ? dataToSave.gallery : [];
+          for (const prevUrl of prevGallery) {
+            if (
+              typeof prevUrl === 'string' &&
+              prevUrl.includes('cloudinary.com') &&
+              !newGallery.includes(prevUrl)
+            ) {
+              const id = publicIdFromUrl(prevUrl);
+              if (id) removedPublicIds.push(id);
+            }
+          }
+          if (removedPublicIds.length > 0) {
+            await fetch('/api/delete-cloudinary-image', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ publicIds: removedPublicIds }),
+            });
+          }
+        }
+        // --- End deletion logic ---
+
         const docRef = doc(db, "businesses", routeName);
-        await setDoc(docRef, { ...data, routeName, createdBy: user.uid, updatedAt: new Date() });
+        await setDoc(docRef, { ...dataToSave, routeName, createdBy: user.uid, updatedAt: new Date() });
         alert("הכרטיס עודכן בהצלחה!");
         router.replace("/manage");
       } else {
@@ -408,6 +584,7 @@ const CardEditor: React.FC<{
     }
   };
 
+  // RouteNameModal submit handler
   const handleRouteNameSubmit = async (routeNameValue: string) => {
     try {
       const routeNameRegex = /^[a-zA-Z0-9-]+$/;
@@ -415,8 +592,6 @@ const CardEditor: React.FC<{
         setRouteError("שם הנתיב חייב להכיל רק אותיות, מספרים ומקפים!");
         return;
       }
-
-      // ensure still logged in
       if (!userData) {
         setRouteError("אירעה שגיאה. אנא נסה שוב.");
         return;
@@ -427,16 +602,13 @@ const CardEditor: React.FC<{
         setRouteError("אירעה שגיאה בזיהוי המשתמש. אנא נסה שוב.");
         return;
       }
-
       // 👇 Check role from Firestore
       const userDocRef = doc(db, "users", uid);
       const userDocSnap = await getDoc(userDocRef);
-      let isAdminUser = false;
-
+      let role = 'none';
       if (userDocSnap.exists()) {
-        isAdminUser = userDocSnap.data().isAdmin;
+        role = userDocSnap.data().role || 'none';
       }
-
       // Fetch all cards for this user
       const cardsOfUserQuery = query(
         collection(db, "businesses"),
@@ -444,12 +616,13 @@ const CardEditor: React.FC<{
       );
       const cardsResponse = await getDocs(cardsOfUserQuery);
       const cards = cardsResponse.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
       const docRef = doc(db, "businesses", routeNameValue);
       const docSnap = await getDoc(docRef);
-      if (!docSnap.exists() && (cards.length === 0 || isAdminUser)) {
+      const cardLimit = roleLimits[role] ?? 0;
+      if (!docSnap.exists() && cardLimit > 0 && cards.length < cardLimit) {
+        const dataToSave = await prepareImagesAndGetDataToSave(data);
         await setDoc(docRef, {
-          ...data,
+          ...dataToSave,
           routeName: routeNameValue,
           createdBy: uid,
           createdAt: new Date(),
@@ -458,8 +631,7 @@ const CardEditor: React.FC<{
         alert("הכרטיס נוצר בהצלחה! הנתיב שלך: " + routeNameValue);
         router.replace("/manage");
       } else {
-        setRouteError("משתמש זה כבר יצר כרטיס. לשדרוג צור קשר.");
-        setShowRouteModal(false);
+        setRouteError("needUpgrade");
       }
     } catch (err) {
       setRouteError("אירעה שגיאה ביצירת הכרטיס. אנא נסה שוב.");
@@ -526,12 +698,12 @@ const CardEditor: React.FC<{
           <div className="grid md:grid-cols-2 gap-6">
             <ImageUpload
               value={data.mainPhoto}
-              onChange={(url) => updateData("mainPhoto", url)}
+              onChange={(file) => handleImageChange("mainPhoto", file)}
               label="תמונה ראשית (לוגו/תמונה אישית)"
             />
             <ImageUpload
               value={data.coverImage}
-              onChange={(url) => updateData("coverImage", url)}
+              onChange={(file) => handleImageChange("coverImage", file)}
               label="תמונת רקע (אופציונלי)"
             />
           </div>
@@ -850,34 +1022,39 @@ const CardEditor: React.FC<{
           <div>
             {/* Multi-image upload area */}
             <ImageUpload
-              value={""}
-              onChange={(url) => updateData(`gallery.${data.gallery.length}`, url)}
+              value={null}
+              onChange={(file) => {
+                if (file) handleGalleryAdd(file);
+              }}
               label="העלה תמונה לגלריה"
               className="mb-4"
             />
             {/* Thumbnails of uploaded images */}
             {data.gallery && data.gallery.length > 0 && (
               <div className="flex flex-wrap gap-4 mt-2">
-                {data.gallery.map((img, idx) => (
-                  <div key={idx} className="relative group">
-                    <img
-                      src={img}
-                      alt={`gallery-img-${idx}`}
-                      className="w-24 h-24 object-cover rounded-lg border border-blue-200"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const newGallery = data.gallery.filter((_, i) => i !== idx)
-                        updateData("gallery", newGallery)
-                      }}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow hover:bg-red-600 transition-colors z-10"
-                      title="הסר תמונה"
-                    >
-                      <FaTrash className="text-xs" />
-                    </button>
-                  </div>
-                ))}
+                {data.gallery.map((img, idx) => {
+                  let previewUrl = "";
+                  if (typeof img === 'string') {
+                    previewUrl = img;
+                  }
+                  return (
+                    <div key={idx} className="relative group">
+                      <img
+                        src={previewUrl}
+                        alt={`gallery-img-${idx}`}
+                        className="w-24 h-24 object-cover rounded-lg border border-blue-200"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleGalleryRemove(idx)}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow hover:bg-red-600 transition-colors z-10"
+                        title="הסר תמונה"
+                      >
+                        <FaTrash className="text-xs" />
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -1039,7 +1216,7 @@ const CardEditor: React.FC<{
                   }
                 `}</style>
                 <div className="custom-scrollbar">
-                  <BusinessCard data={data} highlightStep={currentStep} />
+                  <BusinessCard data={data as SerializedBusinessCard} highlightStep={currentStep} />
                 </div>
               </div>
             </div>
@@ -1112,4 +1289,4 @@ const CardEditor: React.FC<{
   );
 };
 
-export default CardEditor; 
+export default CardEditor;

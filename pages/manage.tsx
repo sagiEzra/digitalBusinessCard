@@ -5,10 +5,12 @@ import { auth, db } from "../lib/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/router";
+import { roleLimits } from '../lib/roles';
+import { FaInfinity } from "react-icons/fa";
 
 const ManagePage: React.FC = () => {
   const [user, setUser] = useState<any>(null);
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [role, setRole] = useState<string>('none');
   const [showTooltip, setShowTooltip] = useState(false);
   const [sidebarSelected, setSidebarSelected] = useState<'cards' | 'create'>('cards');
   const [userCards, setUserCards] = useState<any[]>([]);
@@ -22,19 +24,17 @@ const ManagePage: React.FC = () => {
       }
       setUser(u);
       // Check if business doc exists for this user (by uid)
-
       const identifier = u.uid;
       // 👇 Check role from Firestore
       const userDocRef = doc(db, "users", identifier);
       const userDocSnap = await getDoc(userDocRef);
-
+      let userRole = 'none';
       if (userDocSnap.exists()) {
-        const isAdminUser = userDocSnap.data().isAdmin;
-        setIsAdmin(isAdminUser);
+        userRole = userDocSnap.data().role || 'none';
+        setRole(userRole);
       } else {
-        setIsAdmin(false);
+        setRole('none');
       }
-      
       // Fetch all cards for this user
       const q = query(
         collection(db, "businesses"),
@@ -48,8 +48,7 @@ const ManagePage: React.FC = () => {
   }, [router]);
 
   const handleCreateCard = () => {
-    console.log(userCards.length === 0 || isAdmin)
-    if (userCards.length === 0 || isAdmin) {
+    if (userCards.length === 0 || role !== 'none') {
       setSidebarSelected('create');
       router.push("/create");
     }
@@ -62,6 +61,9 @@ const ManagePage: React.FC = () => {
   const handleEditCard = (routeName: string) => {
     router.push(`/${routeName}/edit`);
   };
+
+  // Card limits by role
+  const cardLimit = roleLimits[role] ?? 0;
 
   if (!user) {
     return (
@@ -84,16 +86,33 @@ const ManagePage: React.FC = () => {
           </button>
           <div className="relative">
             <button
-              className={`w-full py-3 px-4 rounded-xl font-bold text-lg transition-all ${sidebarSelected === 'create' ? 'bg-blue-200 text-blue-900 shadow' : (userCards.length !== 0 && !isAdmin) ? 'bg-gray-200 text-blue-900 cursor-not-allowed' : 'bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800'}`}
+              className={`w-full py-3 px-4 rounded-xl font-bold text-lg transition-all ${sidebarSelected === 'create' ? 'bg-blue-200 text-blue-900 shadow' : (userCards.length !== 0 && cardLimit !== Infinity && userCards.length >= cardLimit) ? 'bg-gray-200 text-blue-900 cursor-not-allowed' : 'bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800'}`}
               onClick={() => handleCreateCard()}
-              disabled={!isAdmin}
+              disabled={cardLimit !== Infinity && userCards.length >= cardLimit}
               onMouseEnter={() => setShowTooltip(true)}
               onMouseLeave={() => setShowTooltip(false)}
               tabIndex={0}
             >
               צור כרטיס חדש
             </button>
-            {!isAdmin && showTooltip && (
+            <div className="flex justify-center mt-10">
+              <div
+                className={`inline-flex items-center gap-2 px-4 py-1 rounded-full font-bold shadow-sm border ${
+                  cardLimit === Infinity
+                    ? "bg-gradient-to-r from-blue-400 to-blue-600 text-white border-blue-500"
+                    : "bg-gradient-to-r from-blue-200 via-blue-300 to-blue-400 text-blue-800 border-blue-200"
+                }`}
+                style={{ fontSize: "1rem", minWidth: "120px" }}
+              >
+                <span className="text-lg">
+                  {cardLimit === Infinity ? <FaInfinity /> : cardLimit}
+                </span>
+                <span className="text-blue-700 text-base font-normal">/</span>
+                <span className="text-lg">{userCards.length}</span>
+                <span className="text-blue-700 text-sm font-medium ml-1">כרטיסים</span>
+              </div>
+            </div>
+            {cardLimit !== Infinity && userCards.length >= cardLimit && showTooltip && (
               <div className="absolute right-0 -top-12 bg-blue-700 text-white text-xs rounded-lg px-3 py-2 shadow-lg z-10 whitespace-nowrap">
                 לכרטיסים נוספים בקלות - שדרג
               </div>

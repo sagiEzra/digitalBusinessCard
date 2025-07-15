@@ -34,8 +34,8 @@ const upgradeOptions = [
 const stepLabels = ["בחר חבילה", "לתשלום", "סיום"];
 
 const UpgradePage = () => {
-  const [selected, setSelected] = useState<null | typeof upgradeOptions[0]>(null);
-  const [step, setStep] = useState(0);
+  const [selected, setSelected] = useState<null | typeof upgradeOptions[0]>(upgradeOptions[0]);
+  const [step, setStep] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const paymentRef = useRef<HTMLDivElement>(null);
   const [paidOption, setPaidOption] = useState<null | typeof upgradeOptions[0]>(null);
@@ -142,18 +142,14 @@ const UpgradePage = () => {
                   <rect width="24" height="24" rx="12" fill="#25D366"/>
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.148-.67.15-.198.297-.767.967-.94 1.166-.173.198-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.58-.487-.501-.669-.51-.173-.007-.372-.009-.57-.009-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.099 3.205 5.077 4.367.71.306 1.263.489 1.695.626.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347z" fill="#fff"/>
                 </svg>
-                להשלמת התשלום וקבלת הרשאות, לחץ על הכפתור למטה ליצירת קשר ב-WhatsApp
+                לתשלום מהיר ב WhatsApp וקבלת הרשאות ליצירת כרטיסים בעצמך - לחץ מטה
               </div>
               <button
                 onClick={handleWhatsApp}
                 className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white font-bold text-xl px-8 py-4 rounded-full shadow-xl transition-all duration-300 mb-3 focus:outline-none focus:ring-2 focus:ring-green-400"
                 autoFocus
               >
-                <svg className="inline-block" width="28" height="28" fill="none" viewBox="0 0 24 24">
-                  <rect width="24" height="24" rx="12" fill="#25D366"/>
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.148-.67.15-.198.297-.767.967-.94 1.166-.173.198-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.58-.487-.501-.669-.51-.173-.007-.372-.009-.57-.009-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.099 3.205 5.077 4.367.71.306 1.263.489 1.695.626.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347z" fill="#fff"/>
-                </svg>
-                שלח הודעה ב-WhatsApp
+                המשך
               </button>
               <button
                 onClick={() => setShowModal(false)}
