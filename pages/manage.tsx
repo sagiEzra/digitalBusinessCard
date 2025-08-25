@@ -1,11 +1,11 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
-import { auth, db } from "../lib/firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, getDoc, collection, query, where, getDocs, deleteDoc } from "firebase/firestore";
+import React, { useState } from "react";
+import { db } from "../lib/firebase";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
-import { roleLimits } from '../lib/roles';
+import { useAuth } from "../lib/auth/useAuth";
+import { ProtectedRoute } from "../lib/auth/ProtectedRoute";
 import { FaInfinity, FaPen, FaTrash } from "react-icons/fa";
 import { theme } from '../styles/theme';
 
@@ -16,47 +16,14 @@ function publicIdFromUrl(url: string): string | null {
 }
 
 const ManagePage: React.FC = () => {
-  const [user, setUser] = useState<any>(null);
-  const [role, setRole] = useState<string>('none');
+  const { user, userCards, canCreateCard, cardLimit, signOut, refreshUserCards } = useAuth();
   const [showTooltip, setShowTooltip] = useState(false);
   const [sidebarSelected, setSidebarSelected] = useState<'cards' | 'create'>('cards');
-  const [userCards, setUserCards] = useState<any[]>([]);
-  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null); // <-- add state
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (u) => {
-      if (!u) {
-        router.replace("/login");
-        return;
-      }
-      setUser(u);
-      // Check if business doc exists for this user (by uid)
-      const identifier = u.uid;
-      // 👇 Check role from Firestore
-      const userDocRef = doc(db, "users", identifier);
-      const userDocSnap = await getDoc(userDocRef);
-      let userRole = 'none';
-      if (userDocSnap.exists()) {
-        userRole = userDocSnap.data().role || 'none';
-        setRole(userRole);
-      } else {
-        setRole('none');
-      }
-      // Fetch all cards for this user
-      const q = query(
-        collection(db, "businesses"),
-        where("createdBy", "==", identifier)
-      );
-      const querySnapshot = await getDocs(q);
-      const cards = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setUserCards(cards);
-    });
-    return () => unsubscribe();
-  }, [router]);
-
   const handleCreateCard = () => {
-    if (userCards.length === 0 || role !== 'none') {
+    if (canCreateCard) {
       setSidebarSelected('create');
       router.push("/create");
     }
@@ -70,19 +37,10 @@ const ManagePage: React.FC = () => {
     router.push(`/${routeName}/edit`);
   };
 
-  // Card limits by role
-  const cardLimit = roleLimits[role] ?? 0;
-
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200">
-        <div className="text-blue-700 text-xl font-bold fade-in">טוען...</div>
-      </div>
-    );
-  }
 
   return (
-    <div dir="rtl" className="min-h-screen flex bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200">
+    <ProtectedRoute>
+      <div dir="rtl" className="min-h-screen flex bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200">
       {/* Sidebar */}
       <aside className="w-64 glass flex flex-col p-8 shadow-2xl border-none rounded-2xl fade-in-up">
         <nav className="flex flex-col gap-8 mt-12">
@@ -95,9 +53,9 @@ const ManagePage: React.FC = () => {
           </button>
           <div className="relative">
             <button
-              className={`w-full py-4 px-6 rounded-2xl font-bold text-xl transition-all duration-300 ${sidebarSelected === 'create' ? 'bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-2xl scale-105' : (userCards.length !== 0 && cardLimit !== Infinity && userCards.length >= cardLimit) ? 'bg-gray-200 text-blue-900 cursor-not-allowed' : 'bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800'}`}
+              className={`w-full py-4 px-6 rounded-2xl font-bold text-xl transition-all duration-300 ${sidebarSelected === 'create' ? 'bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-2xl scale-105' : !canCreateCard ? 'bg-gray-200 text-blue-900 cursor-not-allowed' : 'bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800'}`}
               onClick={() => handleCreateCard()}
-              disabled={cardLimit !== Infinity && userCards.length >= cardLimit}
+              disabled={!canCreateCard}
               onMouseEnter={() => setShowTooltip(true)}
               onMouseLeave={() => setShowTooltip(false)}
               tabIndex={0}
@@ -118,7 +76,7 @@ const ManagePage: React.FC = () => {
                 <span className="text-blue-700 text-base font-medium ml-1">כרטיסים</span>
               </div>
             </div>
-            {cardLimit !== Infinity && userCards.length >= cardLimit && showTooltip && (
+            {!canCreateCard && showTooltip && (
               <div className="absolute right-0 -top-14 bg-blue-700 text-white text-sm rounded-2xl px-4 py-3 shadow-2xl z-10 whitespace-nowrap fade-in-up" style={{ boxShadow: theme.shadows.tooltip }}>
                 לכרטיסים נוספים בקלות - שדרג
               </div>
@@ -131,10 +89,10 @@ const ManagePage: React.FC = () => {
         {/* Navbar */}
         <header className="w-full flex items-center justify-between glass px-10 py-6 shadow-2xl rounded-b-2xl fade-in-up">
           <div className="flex items-center gap-6">
-            {user.photoURL && (
+            {user?.photoURL && (
               <img src={user.photoURL} alt="profile" className="w-14 h-14 rounded-full border-4 border-blue-400 shadow-2xl" />
             )}
-            <span className="text-blue-900 font-bold text-xl" style={{ fontFamily: theme.fontFamily }}>{user.displayName || user.email}</span>
+            <span className="text-blue-900 font-bold text-xl" style={{ fontFamily: theme.fontFamily }}>{user?.displayName || user?.email}</span>
           </div>
           <div className="flex items-center gap-6">
             <button
@@ -145,7 +103,7 @@ const ManagePage: React.FC = () => {
               שדרג
             </button>
             <button
-              onClick={() => signOut(auth)}
+              onClick={signOut}
               className="py-3 px-6 rounded-full bg-gray-200 text-blue-900 font-medium text-lg hover:bg-gray-300 transition-all duration-300 shadow"
               style={{ borderRadius: theme.radii.button }}
             >
@@ -253,7 +211,7 @@ const ManagePage: React.FC = () => {
                             }
                             // Delete Firestore doc
                             await deleteDoc(businessDocRef);
-                            setUserCards(prevCards => prevCards.filter(c => c.id !== card.id));
+                            await refreshUserCards();
                           }
                           setPendingDeleteId(null);
                         }).catch(error => {
@@ -273,7 +231,8 @@ const ManagePage: React.FC = () => {
           })()}
         </section>
       </main>
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 };
 

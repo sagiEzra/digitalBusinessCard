@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import { BusinessCard, SerializedBusinessCard } from "./BusinessCard";
 import { addDoc, collection, doc, setDoc, getDoc, query, where, getDocs, deleteDoc } from "firebase/firestore";
-import { db, auth } from "../lib/firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { db } from "../lib/firebase";
+import { useAuth } from "../lib/auth/useAuth";
+import { ProtectedRoute } from "../lib/auth/ProtectedRoute";
 import { roleLimits } from '../lib/roles';
 import {
   FaUpload,
@@ -370,23 +371,11 @@ const CardEditor: React.FC<{
   const [isValid, setIsValid] = useState(false);
   const [showRouteModal, setShowRouteModal] = useState(false);
   const [routeError, setRouteError] = useState("");
-  const [userData, setUserData] = useState<{ user: any; data: BusinessCardData } | null>(null);
+  const { user: authUser } = useAuth();
   const router = useRouter();
   const [previousUrls, setPreviousUrls] = useState<{ mainPhoto?: string; coverImage?: string; gallery?: string[] }>({});
 
   // TODO: add localstorage saving progress on create page.
-
-  // Auth check
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        router.replace("/login");
-      } else {
-        setUserData({ user, data });
-      }
-    });
-    return () => unsubscribe();
-  }, [router, data]);
 
   // If editMode, fetch card data by routeName
   useEffect(() => {
@@ -523,9 +512,8 @@ const CardEditor: React.FC<{
   // Save logic
   const handleSave = async () => {
     try {
-      if (!userData) return;
-      const { user } = userData;
-      const docId = user.uid;
+      if (!authUser) return;
+      const docId = authUser.uid;
       if (!docId) return;
       // --- Deletion logic for removed images (edit mode only) ---
       if (editMode) {
@@ -576,7 +564,7 @@ const CardEditor: React.FC<{
         // --- End deletion logic ---
 
         const docRef = doc(db, "businesses", routeName);
-        await setDoc(docRef, { ...dataToSave, routeName, createdBy: user.uid, updatedAt: new Date() });
+        await setDoc(docRef, { ...dataToSave, routeName, createdBy: authUser.uid, updatedAt: new Date() });
         alert("הכרטיס עודכן בהצלחה!");
         router.replace("/manage");
       } else {
@@ -595,12 +583,11 @@ const CardEditor: React.FC<{
         setRouteError("שם הנתיב חייב להכיל רק אותיות, מספרים ומקפים!");
         return;
       }
-      if (!userData) {
+      if (!authUser) {
         setRouteError("אירעה שגיאה. אנא נסה שוב.");
         return;
       }
-      const { user } = userData;
-      const uid = user.uid;
+      const uid = authUser.uid;
       if (!uid) {
         setRouteError("אירעה שגיאה בזיהוי המשתמש. אנא נסה שוב.");
         return;
@@ -1163,7 +1150,8 @@ const CardEditor: React.FC<{
   ];
 
   return (
-    <div dir="rtl" className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 flex">
+    <ProtectedRoute>
+      <div dir="rtl" className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 flex">
       {/* Preview Sidebar */}
       <aside className="fixed left-0 top-0 h-screen w-[450px] bg-white border-r border-blue-200 shadow-xl flex flex-col z-40">
         <div className="flex flex-col flex-1 overflow-hidden">
@@ -1288,7 +1276,8 @@ const CardEditor: React.FC<{
         error={routeError}
         editMode={editMode}
       />
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 };
 

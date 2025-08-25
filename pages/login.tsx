@@ -1,25 +1,17 @@
 "use client"
 
-import React, { useEffect } from "react";
-import { auth, provider } from "../lib/firebase";
-import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import React from "react";
+import { useAuth } from "../lib/auth/useAuth";
+import { ProtectedRoute } from "../lib/auth/ProtectedRoute";
 import { useRouter } from "next/router";
 
 const LoginPage: React.FC = () => {
+  const { signIn } = useAuth();
   const router = useRouter();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        router.replace("/manage");
-      }
-    });
-    return () => unsubscribe();
-  }, [router]);
 
   const handleLogin = async () => {
     try {
-      await signInWithPopup(auth, provider);
+      await signIn();
       router.replace("/manage");
     } catch (err) {
       alert("שגיאה בהתחברות עם גוגל");
@@ -27,7 +19,8 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div dir="rtl" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200">
+    <ProtectedRoute requireAuth={false} redirectTo="/manage">
+      <div dir="rtl" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200">
       <div className="bg-white rounded-2xl shadow-xl border border-blue-200 p-10 max-w-md w-full flex flex-col items-center">
         <h1 className="text-3xl font-bold text-blue-900 mb-8 text-center">נהלו וצרו כרטיסי ביקור דיגיטליים בקלות</h1>
         <button
@@ -48,7 +41,8 @@ const LoginPage: React.FC = () => {
           התחבר עם Google
         </button>
       </div>
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 };
 

@@ -2,10 +2,10 @@
 
 import { FloatingWhatsAppButton } from "../floationgWhatsAppButton/FloatingWhatsAppButton"
 import { FaRocket, FaGem, FaShareAlt, FaStar, FaBolt, FaSyncAlt, FaMoneyBillWave, FaPen } from 'react-icons/fa';
-import { auth } from "../../lib/firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { useAuth } from "../../lib/auth/useAuth";
 import PricingCard from "../PricingCard";
 import { theme } from '../../styles/theme';
+import { useRouter } from "next/router";
 
 
 const cardUrls = [
@@ -15,22 +15,14 @@ const cardUrls = [
 ];
 
 export const Homepage: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+
   const handleCTA = () => {
-    // Check auth state and route accordingly
-    if (typeof window !== "undefined") {
-      const user = auth.currentUser;
-      if (user) {
-        window.location.href = "/manage";
-      } else {
-        // Listen for auth state in case of async
-        onAuthStateChanged(auth, (u) => {
-          if (u) {
-            window.location.href = "/manage";
-          } else {
-            window.location.href = "/login";
-          }
-        });
-      }
+    if (isAuthenticated) {
+      router.push("/manage");
+    } else {
+      router.push("/login");
     }
   };
 
